@@ -1,0 +1,111 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage[spanish]{babel}
+\usepackage[pdftex,usenames,dvipsnames]{color}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+\usepackage[small,bf]{caption}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{bm}
+\usepackage{times}
+
+\begin{document}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
+\renewcommand{\lstlistingname}{C\'odigo Fuente}
+\lstloadlanguages{Octave} 
+\lstdefinelanguage{MyOctave}[]{Octave}{
+        deletekeywords={beta,det},
+        morekeywords={repmat}
+} 
+\lstset{
+        language=MyOctave,
+        stringstyle=\ttfamily,
+        showstringspaces = false,
+        basicstyle=\footnotesize\ttfamily,
+        commentstyle=\color{gray},
+        keywordstyle=\bfseries,
+        numbers=left,
+        numberstyle=\ttfamily\footnotesize,
+        stepnumber=1,                   
+        framexleftmargin=0.20cm,
+        numbersep=0.37cm,              
+        backgroundcolor=\color{white},
+        showspaces=false,
+        showtabs=false,
+        frame=l,
+        tabsize=4,
+        captionpos=b,               
+        breaklines=true,             
+        breakatwhitespace=false,      
+        mathescape=true
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% begin TITLE PAGE %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+        \vfill
+        \thispagestyle{empty}
+        \begin{center}
+                \includegraphics{./images/itba_logo.png}
+                \vfill
+                \Huge{Trabajo Pr\'actico 1}\\
+                \vspace{1cm}
+                \Huge{Métodos Numéricos Avanzados}\\
+        \end{center}
+        \vfill
+        \large{
+        \begin{tabular}{lcr}
+                Crespo, Alvaro && 50758 \\
+                Ordano, Esteban && 50753 \\
+                Civile, Juan Pablo && 50453\\
+        \end{tabular}
+        }
+
+        \vspace{2cm}
+        \begin{center}
+                \large{27 de Septiembre de 2012}\\
+        \end{center}
+\end{titlepage}
+\newpage
+
+\setcounter{page}{1}
+
+\tableofcontents
+
+\newpage
+
+\section*{Resumen}
+
+\section*{Palabras Claves}
+
+\section{Introducci\'on}
+
+
+\section{Metodología}
+% Pueden ser varias secciones
+
+\section{Resultados}
+% Podria ser Resultados y Conclusiones
+
+
+\section{Conclusiones}
+
+
+\section{Bibliografía}
+% Ver papers y elegir una forma de presentar la bibliografía
+
+\end{document}
