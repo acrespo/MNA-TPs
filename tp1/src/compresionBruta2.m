@@ -1,37 +1,40 @@
-function res = compresionBruta1()
+function res = compresionBruta2(path, out, count, eig_function)
 
-    a = imread('lena512.bmp');
+    a = imread(path);
     imshow(a) % muestro la imagen original
-    b = im2col(a,[16,16],'distinct');
+    b = im2col(a, [16,16], 'distinct');
     m = mean(double(b.'));
     m = m.';
-    M = repmat(m,1,1024);
-    ds = double(b)-M;
+    M = repmat(m, 1, 1024);
+    ds = double(b) - M;
     cc = cov(double(b'));
-    [V,D] = eig(cc);
+
+    [V, D] = eig_function(cc);
+
     % ordeno los autovalores de mayor a menor
     D = diag(D);
-    [D,i] = sort(D,'descend');
+    [D,i] = sort(D, 'descend');
     D = diag(D);
     V = V(:,i);
-    % muestro la primera ''autoimagen''
-    c = (V(:,1)-min(V(:,1)))*256/(max(V(:,1))-min(V(:,1)));
-    dv1 = col2im(c,[16,16],[16,16],'distinct');
-    dv1 = uint8(round(dv1));
-    imshow(dv1)
+
     % proyecto la primer autoimagen
-    %pv1 = V(:,1).'*ds.';
-    pv1 = V(:,1).'*ds;
-    pv2 = V(:,2).'*ds;
-    pv3 = V(:,3).'*ds;
-    pv4 = V(:,4).'*ds;
+
+    pv = [];
+    for i = 1:count
+        pv(:,i) = V(:,i).' * ds;
+    end
+
     % si solamente considero la primer autoimagen...
     d = M;
     for k = 1:1024
-        d(:,k) = d(:,k) + pv1(k)*V(:,1) + pv2(k)*V(:,2) + pv3(k)*V(:,3) + pv4(k)*V(:,4);
+        for i = 1:count
+            d(:,k) += pv(k,i) * V(:,i);
+        end
     end
-    compimg = col2im(d,[16,16],[512,512],'distinct');
+
+    compimg = col2im(d, [16,16], [512,512], 'distinct');
     compimg = uint8(round(compimg));
-    imshow(compimg)
+    imshow(compimg);
+    imwrite(compimg, out);
 
 end
