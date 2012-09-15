@@ -1,7 +1,4 @@
-\documentclass[a4paper,10pt]{article}
-
-\usepackage[utf8]{inputenc}
-\usepackage{t1enc}
+\documentclass[twocolumn,a4paper,10pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{t1enc}
@@ -9,6 +6,7 @@
 \usepackage[pdftex,usenames,dvipsnames]{color}
 \usepackage[pdftex]{graphicx}
 \usepackage{enumerate}
+\usepackage{url}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -16,96 +14,167 @@
 \usepackage[small,bf]{caption}
 \usepackage{float}
 \usepackage{subfig}
-\usepackage{listings}
 \usepackage{bm}
+\usepackage{fancyhdr}
 \usepackage{times}
+\usepackage{titlesec}
+\usepackage[numbers]{natbib}
+\usepackage{titling}
+
+\def\customabstract{\vspace{.5em}
+    {\small\center{\textbf{RESUMEN}} \\[0.5em] \relax%
+}}
+\def\endkeywords{\par}
+
+\def\keywords{\vspace{.5em}
+    {\textit{Palabras clave: } 
+}}
+\def\endkeywords{\par}
+
+\titleformat{\section}{\small\center\bfseries}{\thesection.}{0.5em}{\normalsize\uppercase}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\bibsection}{}
+
+% TITLE Configuration
+\setlength{\droptitle}{-30pt}
+\pretitle{\begin{center}\Huge\begin{rmfamily}}
+\posttitle{\par\end{rmfamily}\end{center}\vskip 0.5em}
+\preauthor{\begin{center}
+        \large \lineskip 0.5em%
+\begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\normalsize 
+    \\[1em] Estudiantes del Instituto Tecnológico de Buenos Aires
+\par\end{center}}
+\predate{\begin{center}\small}
+\postdate{\par\end{center}}
+
+% Headers
+\addtolength{\voffset}{-40pt}
+\addtolength{\textheight}{80pt}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+\fancyfoot{}
+\lhead{\small No publicado: Cátedra de Métodos Numéricos Avanzados (ITBA)}
+\rhead{\small \thepage}
+\cfoot{\small Copyright \copyright 2012 ITBA}
+
+% Metadata
+\title{Autovalores y Compresión de Imágenes}
+\date{20 de Septiembre de 2012}
+\author{Civile, Juan Pablo \and Crespo, Álvaro \and Ordano, Esteban }
 
 \begin{document}
-\setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{5}
 
-\renewcommand{\lstlistingname}{C\'odigo Fuente}
-\lstloadlanguages{Octave} 
-\lstdefinelanguage{MyOctave}[]{Octave}{
-        deletekeywords={beta,det},
-        morekeywords={repmat}
-} 
-\lstset{
-        language=MyOctave,
-        stringstyle=\ttfamily,
-        showstringspaces = false,
-        basicstyle=\footnotesize\ttfamily,
-        commentstyle=\color{gray},
-        keywordstyle=\bfseries,
-        numbers=left,
-        numberstyle=\ttfamily\footnotesize,
-        stepnumber=1,                   
-        framexleftmargin=0.20cm,
-        numbersep=0.37cm,              
-        backgroundcolor=\color{white},
-        showspaces=false,
-        showtabs=false,
-        frame=l,
-        tabsize=4,
-        captionpos=b,               
-        breaklines=true,             
-        breakatwhitespace=false,      
-        mathescape=true
-}
+\pagestyle{fancy}
+\maketitle
+\thispagestyle{fancy}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%% begin TITLE PAGE %%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{titlepage}
-        \vfill
-        \thispagestyle{empty}
-        \begin{center}
-                \includegraphics{./images/itba_logo.png}
-                \vfill
-                \Huge{Trabajo Pr\'actico 1}\\
-                \vspace{1cm}
-                \Huge{Métodos Numéricos Avanzados}\\
-        \end{center}
-        \vfill
-        \large{
-        \begin{tabular}{lcr}
-                Crespo, Alvaro && 50758 \\
-                Ordano, Esteban && 50753 \\
-                Civile, Juan Pablo && 50453\\
-        \end{tabular}
-        }
+\begin{customabstract}
+\textbf{Una cita: \cite{PHPBuch} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque adipiscing, orci non ultricies malesuada, lacus enim varius odio, a venenatis justo risus eu ante. Sed a nisi quam, ut placerat leo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.}
+\end{customabstract}
 
-        \vspace{2cm}
-        \begin{center}
-                \large{27 de Septiembre de 2012}\\
-        \end{center}
-\end{titlepage}
-\newpage
+\begin{keywords}
+paper, paper, paper
+\end{keywords}
 
-\setcounter{page}{1}
-
-\tableofcontents
-
-\newpage
-
-\section*{Resumen}
-
-\section*{Palabras Claves}
 
 \section{Introducci\'on}
 
+    Nullam quis odio erat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean eu mauris ac augue volutpat pellentesque. Donec ultricies pulvinar ipsum sit amet pellentesque. Maecenas eget elit tortor. Donec in enim magna. Donec suscipit enim vitae erat dignissim fringilla nec eget metus. Praesent enim elit, gravida vitae feugiat in, vehicula a velit. Nunc non enim enim, eget accumsan nisl. Pellentesque malesuada velit eu tellus interdum dapibus. In ultricies est at neque imperdiet scelerisque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit tempor aliquet. Nam id lacus lacus. Quisque venenatis risus id nunc bibendum hendrerit molestie turpis aliquet. Quisque sit amet sem ac leo iaculis tempus.
+
+    Mauris suscipit gravida justo a laoreet. Proin bibendum nunc eu augue tristique et volutpat enim sollicitudin. Sed sed nulla id metus ultricies sagittis ut et diam. Vestibulum nec nisi ac est euismod cursus ac ac augue. Nullam molestie sodales est, vel pretium libero cursus et. Etiam id elit justo, eu consequat erat. Duis vitae neque metus, sit amet suscipit urna. Vivamus scelerisque lorem eros.
 
 \section{Metodología}
 % Pueden ser varias secciones
+Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
+\begin{table}
+    \center
+    \begin{tabular}{c|c|c}
+            $t$ [secs] & $\beta$ & $\alpha_1$ \\ \hline \hline
+       0.0000000  &  0.000000  & -0.4510268 \\
+       0.0785398  &  0.785398  & -0.1532732 \\
+       0.1570796  &  1.570796  &  0.0131000 \\
+       0.2356194  &  2.356194  &  0.2125534 \\
+       0.3141592  &  3.141592  &  1.3363289 \\
+       0.3926990  &  3.926990  &  3.5220433 \\
+       0.4712388  &  4.712388  &  4.4038604 \\
+       0.5497787  &  5.497787  &  5.1487891 \\
+
+    \end{tabular}
+    \caption{Valores obtenidos para algunos instantes}
+    \label{tabla_segundo_punto}
+\end{table}
+
+Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
+
+\begin{figure}
+    \center \includegraphics[height=100pt]{bpositivo.png}
+    \caption{Esta figura no muestra nada}
+\end{figure}
 
 \section{Resultados}
 % Podria ser Resultados y Conclusiones
+Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
 
+Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
+% Podria ser Resultados y Conclusiones
+Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
+
+Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
+% Podria ser Resultados y Conclusiones
+Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
+
+Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
+
+\begin{figure}
+    \center \includegraphics[height=100pt]{bpositivo.png}
+    \caption{Esta figura no muestra nada}
+\end{figure}
+
+Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
+\begin{figure}
+    \center \includegraphics[height=100pt]{bpositivo.png}
+    \caption{Esta figura no muestra nada}
+\end{figure}
+
+Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
 
 \section{Conclusiones}
+Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
+
+Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
+% Podria ser Resultados y Conclusiones
+Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
+\begin{figure}
+    \center \includegraphics[height=100pt]{bpositivo.png}
+    \caption{Esta figura no muestra nada}
+\end{figure}
 
 
-\section{Bibliografía}
-% Ver papers y elegir una forma de presentar la bibliografía
+\section*{Referencias}
+\begin{thebibliography}{99}
+    \bibitem{Libro_Visual} Francisco Javier Ceballos: Enciclopedia de Microsoft Visual
+        Basic. Editorial Ra-Ma. Madrid, 1999.
+    \bibitem{PHPBuch} Dieter Staas: PHP 5 Espresso!. Franzis Verlag GmbH.
+        Poing, 2004.
+    \bibitem{Ralph} Ralph Pfeiffer. Diplomarbeit: Planung und
+        Erstellung einer im Höhenwinkel nachführbaren Photovoltaikanlage
+        sowie Realisierung der Steuerung und Messwerterfassung eines
+        Blockheizkraftwerkes in einem bestehenden regenerativen
+        Energienetzwerk. Fachhochschule Braunschweig/Wolfenbüttel,
+        Fachbereich Versorgungstechnik, 27.04.2004
+    \bibitem{Lars}Lars Ortlieb, Diplomarbeit: Vernetzung alternativer
+        Energiesysteme unter Verwendung moderner Kommunikationstechnik,
+        Fachhochschule Braunschweig/Wolfenbüttel, Fachbereich
+        Versorgungstechnik, 03.09.2003
+    \bibitem{Schuamcher} Mike Schumacher. Datentechnische Erfassung einer
+        nachgeführten Photovoltaikanlage in einem alternativen
+        Energieverbund mittels moderner Kommunikationstechnologie.
+        Fachhochschule Braunschweig/Wolfenbüttel, Fachbereich
+        Versongungstechnik, 29.04.2004
+    \bibitem{TAC} TAC Xenta 511 Engineering Manual
+    \bibitem{TACWeb} TAC Web-Seite: \url{http://www.tac-global.com}
+    \bibitem{PHP} PHP Web-Seite: \url{http://www.php.net}
+\end{thebibliography}
 
 \end{document}
