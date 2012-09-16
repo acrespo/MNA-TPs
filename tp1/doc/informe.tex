@@ -20,6 +20,38 @@
 \usepackage{titlesec}
 \usepackage[numbers]{natbib}
 \usepackage{titling}
+\usepackage{listings}
+
+\renewcommand{\lstlistingname}{Código Fuente}
+
+%%% Listings
+\lstloadlanguages{Octave} 
+\lstdefinelanguage{MyOctave}[]{Octave}{% 
+	deletekeywords={beta,det},
+	morekeywords={repmat}
+} 
+\lstset{ %
+	language=MyOctave,
+	stringstyle=\ttfamily,
+	showstringspaces = false,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\color{gray},
+	keywordstyle=\bfseries,
+	numbers=left,
+	numberstyle=\ttfamily\footnotesize,
+	stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
+	framexleftmargin=0.20cm,
+	numbersep=0.37cm,               % how far the line-numbers are from the code
+	backgroundcolor=\color{white},
+	showspaces=false,
+	showtabs=false,
+	frame=l,
+	tabsize=4,
+	captionpos=b,                   % sets the caption-position to bottom
+	breaklines=true,                % sets automatic line breaking
+	breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+	mathescape=true
+}
 
 \def\customabstract{\vspace{.5em}
     {\small\center{\textbf{RESUMEN}} \\[0.5em] \relax%
@@ -176,5 +208,8 @@ Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
     \bibitem{TACWeb} TAC Web-Seite: \url{http://www.tac-global.com}
     \bibitem{PHP} PHP Web-Seite: \url{http://www.php.net}
 \end{thebibliography}
+
+\section*{Código Fuente}
+    \lstinputlisting[caption=problem.m,mathescape=false]{../src/problem.m}
 
 \end{document}
