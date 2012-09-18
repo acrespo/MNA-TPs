@@ -17,14 +17,14 @@ function res = compresionBruta2(path, out, count, eig_function)
     D = diag(D);
     V = V(:,i);
 
-    % proyecto la primer autoimagen
+    % proyecto las primeras N autoimagenes
 
     pv = [];
     for i = 1:count
         pv(:,i) = V(:,i).' * ds;
     end
 
-    % si solamente considero la primer autoimagen...
+    % solamente considero las primeras autoimagenes...
     d = M;
     for k = 1:1024
         for i = 1:count
