@@ -137,6 +137,79 @@ Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
     \label{tabla_segundo_punto}
 \end{table}
 
+\subsection{Compresión bruta 2: PCA}
+
+Desde el punto de vista del  \'algebra lineal, la imagen dividida en bloques de 16 x 16, como en el caso anterior, se puede considerar simplemente como
+1024 vectores de 256 elementos cada uno (la matriz b del código). Es decir, tenemos vectores en $\mathbb{R}^{256}$ . Dada una base cualquiera de $\mathbb{R}^{256}$,
+ que cuenta con 256 vectores linealmente independientes, podemos representar cada uno de los bloques de la imagen por su proyecci\'on sobre cada vector en la base. 
+Es decir, si queremos darle la imagen a alguien, le podemos dar la base y los 256 n\'umeros correspondientes a la proyeccci\'on sobre cada vector de la misma. \\
+
+Para reducir el problema, podríamos pensar en usar $N < 256$ vectores linealmente independientes en la base. De esta manera, para comunicar la imagen s\'olo
+tenemos que dar N vectores en la base y N n\'umeros por cada bloque. El problema es que usando s\'olo N vectores no se puede representar todo $\mathbb{R}^{256}$ y la 
+imagen comunicada no ser\'ia exactamente igual a la original. Se plantea entonces el interrogante de como elegir los N vectores de manera de minimizar la p\'erdida 
+de calidad de la imagen. La respuesta la da lo que se denomina \textit{Principal Component Analysis} y, en nuestro caso, es m\'as o menos como sigue.\\
+
+Introducimos el famoso concepto de la Estadística, la Covarianza. La covarianza nos da una idea de qu\'e tanto cambian juntas dos variables. Si tenemos, por ej., 
+dos variables aleatorias Y, Z la covarianza se define como,
+
+\[ cov(Y, Z) = E [(Y - E(Y )) (Z - E(Z))] \]
+
+donde $E(x)$ es la esperanza matem\'atica o valor esperado. \\
+
+En nuestro caso, por ej., podemos considerar a cada uno de los 256 n\'umeros que representan el nivel de gris de un pixel en un bloque como un variable aleatoria.
+Llamemos $X_{i}, i = 1, 2, \dotsc, 256$, a dichas variables aleatorias. Luego, podemos definir una matriz $C = (C_{ij} )$ de la siguiente manera,
+
+\[C_{ij} = Cov(X_{i}, X_{j})  \]
+
+A $\textbf{C}$ se la denomina matriz de covarianza.\\
+
+Sin embargo, nosotros no tenemos distribuciones de probabilidad que nos permitan calcular la matriz covarianza. S\'olo tenemos, en el ejemplo de la imagen
+de Lena, 1024 muestras de cada variable aleatoria: una por cada bloque. Esto nos permite calcular la matriz de covarianza muestral $\widehat{C} = (\widehat{C}_{ij})$:
+
+\[ \widehat{C}_{ij} =  \frac{1}{1024 - 1}\sum_{k=1}^{1024} (x_{ik} - \widehat{x}_{i}) (x_{jk} - \widehat{x}_{j}) \]
+
+donde
+\begin{itemize}
+    \item $x_{ik}$ es la k-\'esima muestra de la i- \'esima variable aleatoria o, en el contexto de nuestra imagen, el nivel de gris del i-\'esimo pixel en el 
+    k- \'esimo bloque,
+    \item $\widehat{x}_{i}$ es la media muestral de la i- \'esima variable aleatoria o el nivel de gris del i-\'esimo pixel del “bloque promedio”, es decir,
+    \[ \widehat{x}_{i} = \frac{1}{1024} \sum_{k=1}^{1024} x_{ik} \]
+\end{itemize}
+
+\paragraph*{}
+
+La matriz de covarianza muestral 
+$\widehat{C}_{ij}$ nos habla de qu\'e tanto var\'ian juntos los niveles de gris del i-\'esimo y el j-\'esimo pixel en los bloques de la imagen. Y ahora viene 
+el punto clave: vamos a calcular los autovalores y autovectores. Cada autovector nos da una direcci\'on caracter\'istica de cambio y el autovalor correspondiente 
+(siempre $\geq$ 0) \footnote{}
+ nos dice qu\'e tan importante es el cambio en dicha direcci\'on. En el contexto de la imagen de Lena, cada autovector es una \textit{autoimagen}
+que nos habla de un esquema de cambio caracter\'istico de los niveles de gris de los bloques y cada autovalor nos habla de la importancia de ese esquema frente 
+a los dem\'as. \\
+
+Vamos a unir todo esto con la compresi\'on de la imagen.Los autovectores conforman la base de $\mathbb{R}^{256}$ de la que habl\'abamos m\'as arriba. 
+Los autovalores nos dicen c\'omo elegir un subconjunto de esos autovectores: elegimos aquellos que tienen el mayor autovalor. \\
+
+Nuestro c\'odigo de Octave \ref{codigo-compresionBruta2} muestra c\'omo realizar la compresi\'on usando estas ideas. \\
+
+Podemos ver como se usa la función $cov$ para calcular la matrix de covarianza muestral $\widehat{C}$. A la que luego se le calculan los autovalores y autovectores
+utilizando una funci\'on recibida como par\'ametro del programa, $eig\_function$, que simplemente puede ser la funci\'on $eig$ de Octave o una definida por el usuario.
+Utilizando la función $diag$ se extraen en un vector los autovalores de la diagonal de la matriz $D$ retornada por $eig\_function$. Dicho vector es ordenado de 
+mayor a menor (de forma \textit{descendente}) usando la funci\'on $sort$ y luego se vuelve a utilizar la funci\'on $diag$ para obtener una matriz diagonal, cuya 
+diagonal principal sea el vector ordenado. Una vez ordenados los autovalores, resta ordenar de la misma forma los autovectores. Esto se consiguen haciendo $V = V(:,i)$,
+donde $i$ es el vector de los \'indices originales que es una de las cosas que devuelve la funci\'on $sort$ al ordenar a los autovalores.\\
+
+Habiendo hecho esto, se procede a obtener las N proyecciones de los N autovectores correspondientes a los N autovalores más grandes. Esto se logra a través de la 
+l\'inea $pv(:,i) = V(:,i).' * ds;$. \\
+
+Luego, se le suman estas proyecciones a los valores de la matriz $M$ del caso anterior (y llam\'andola ahora $d$), la cual contiene el ``gris promedio'' para todos 
+los vectores. Esto se logra con un bloque $for$ de 1 a 1024, la cantidad de bloques en que dividimos la imagen, que se corresponde con la cantidad de columnas 
+de la matriz $d$. En cada iteración de dicho bloque $for$, se deben sumar las N proyeccciones deseadas. Para ello, se necesita otro bloque $for$ de 1 a N, la cantidad 
+de proyecciones. La suma de las proyecciones se consigue f\'acilmente mediante $d(:,k)\: += pv(k,i) * V(:,i);$. \\
+
+Finalmente, s\'olo queda volver a juntar las columnas de la matriz $d$ en bloques no solapados para volver a formar la imagen. Esto se logra usando la funci\'on 
+$col2im$ de Octave, a la cual se le pasa como par\'ametro el tamaño de bloque, el de la matriz y un flag para indicar que se desean bloques no solapados. Como toque 
+final, los n\'umeros de la matriz resultante, la imagen comprimida, son redondeados y convertidos a enteros de 8 bits (para que queden en el rango 0 - 255).\\
+
 Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
 
 \begin{figure}
@@ -210,6 +283,6 @@ Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
 \end{thebibliography}
 
 \section*{Código Fuente}
-    \lstinputlisting[caption=problem.m,mathescape=false]{../src/problem.m}
-
+    \label{codigo-compresionBruta2}
+    \lstinputlisting[caption=compresionBruta2.m,mathescape=false]{../src/compresionBruta2.m}
 \end{document}
