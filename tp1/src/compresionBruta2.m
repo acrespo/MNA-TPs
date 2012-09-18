@@ -1,13 +1,13 @@
-function res = compresionBruta2(path, out, count, eig_function)
+function res = compresionBruta2(path, out, N, eig_function)
 
     a = imread(path);
     imshow(a) % muestro la imagen original
     b = im2col(a, [16,16], 'distinct');
-    m = mean(double(b.'));
+    m = mean(b.');
     m = m.';
     M = repmat(m, 1, 1024);
-    ds = double(b) - M;
-    cc = cov(double(b'));
+    ds = double(b) - M; %se castea a double para evitar problemas al hacer la multiplicacion de ds. No esta definida para uint8.
+    cc = cov(b');
 
     [V, D] = eig_function(cc);
 
@@ -20,20 +20,20 @@ function res = compresionBruta2(path, out, count, eig_function)
     % proyecto las primeras N autoimagenes
 
     pv = [];
-    for i = 1:count
+    for i = 1:N
         pv(:,i) = V(:,i).' * ds;
     end
 
-    % solamente considero las primeras autoimagenes...
+    % solamente considero las primeras N autoimagenes...
     d = M;
     for k = 1:1024
-        for i = 1:count
+        for i = 1:N
             d(:,k) += pv(k,i) * V(:,i);
         end
     end
 
     compimg = col2im(d, [16,16], [512,512], 'distinct');
-    compimg = uint8(round(compimg));
+    compimg = uint8(compimg);
     imshow(compimg);
     imwrite(compimg, out);
 
