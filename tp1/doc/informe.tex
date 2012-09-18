@@ -64,6 +64,7 @@
 \def\endkeywords{\par}
 
 \titleformat{\section}{\small\center\bfseries}{\thesection.}{0.5em}{\normalsize\uppercase}
+\titleformat{\subsection}{\small\center\bfseries}{}{0.5em}{\smallsize\uppercase}
 \renewcommand{\thesection}{\Roman{section}}
 \renewcommand{\bibsection}{}
 
@@ -137,7 +138,35 @@ Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
     \label{tabla_segundo_punto}
 \end{table}
 
-\subsection{Compresión bruta 2: PCA}
+\subsection{Compresi\'on bruta 1: la imagen media}
+
+Una forma muy simple de comprimir una imagen es la siguiente. Dividir la imagen en bloques no solapados de, por ej., 16 x 16. En la imagen de Lena (de 512 x 512) 
+hay 1024 bloques: dar la imagen es equivalente a dar 256 n\'umeros por cada bloque. Una forma burda de comprimir la imagen es dar lo mismos 256 n\'umeros para todos 
+los bloques, comprimiendo la imagen (con p\'erdida obviamente) de 256 kbytes a 256 bytes. Una posibilidad es dar los valores correspondientes a un ``bloque promedio''.\\
+
+Nuestro c\'odigo de Octave (c\'odigo fuente \ref{compresionBruta1}) permite realizar dicha operaci\'on. \\
+
+La funci\'on $imread$ lee im\'agenes en matrices. Al tratarse en este caso de una imagen de 512 x 512 en escala de grises, el resultado es una matriz de 512 filas y 
+512 columnas en el que cada elemento es un entero que puede ser de 8 o 16 bits. La funci\'on $im2col$ toma esa matriz y divide en bloques de alg\'un tamaño dado en 
+columnas seg\'un el modo que se desee (en nuestro caso, nos interesa que los bloqueas no se solapen). El resultado es la matriz que denominamos $b$, de 256 filas y 
+1024 columnas. Se puede que la matriz $b$ tiene en cada columna un vector asociado a un bloque.  \\
+
+Luego se procede a calcular la media aritm\'etica entre los bloques, es decir, el ``bloque promedio''. Para esto, utilizamos la funci\'on $mean$, que aplicada a 
+matrices devuelve un vector con las medias de cada columna. Pero dado que queremos la media entre los bloques (y no la media de cada bloque) debemos aplicarle
+$mean$ a la traspuesta de la matriz $b$. Se puede pensar que de esta forma estamos obteniendo la media de cada componente del ``bloque promedio''. \\
+
+Bien, ahora tenemos un vector con el ``bloque promedio'', $m$, y tenemos volver a formar una matriz de 512 filas y 512 columnas. Para ello utilizaremos la funci\'on
+$col2im$ que funciona de manera opuesta a $im2col$. Esta funci\'on toma una matriz y reagrupa sus columnas en bloques de un tamaño dado, formando una matriz del 
+tamaño especificado seg\'un un criterio, que en nuestro caso es que los bloques no se solapen. Pero para utilizar esta funci\'on necesitamos la matriz cuyas 
+columnas representen los bloques de la matriz (e imagen) final. Lo que podemos hacer es trasponer el vector $m$, nuestro ``bloque promedio'', y replicarlo de forma
+de lograr tener la cantidad de bloques necesarios, es decir 1024. Esto se logra de manera sencilla utilizando la funci\'on $repmat$, la cual forma una matriz de un
+tamaño dado con copias de una determinada matriz. En nuestro caso, llamamos a $repmat$ con la traspuesta de $m$, y 1 x 1024 como tamaño de matriz, ya que tenemos un 
+vector columna de 256 elementos y queremos replicarlo 1024 veces para formar una matriz de 256 filas y 1024 columnas.\\
+
+Luego, podemos aplicar $col2im$ a la matriz $M$ que devuelta por la funci\'on $repmat$, lo que nos da como resulta una matriz $d$. Solo resta redondear y los n\'umeros 
+de dicha matriz y convertirlos a enteros de 8 bits (para que queden en el rango 0 - 255). Para ello, basta aplicar la funci\'on $uint8$ a la matriz $d$.
+
+\subsection{Compresi\'on bruta 2: PCA}
 
 Desde el punto de vista del  \'algebra lineal, la imagen dividida en bloques de 16 x 16, como en el caso anterior, se puede considerar simplemente como
 1024 vectores de 256 elementos cada uno (la matriz b del código). Es decir, tenemos vectores en $\mathbb{R}^{256}$ . Dada una base cualquiera de $\mathbb{R}^{256}$,
@@ -178,10 +207,14 @@ donde
 
 \paragraph*{}
 
-La matriz de covarianza muestral 
-$\widehat{C}_{ij}$ nos habla de qu\'e tanto var\'ian juntos los niveles de gris del i-\'esimo y el j-\'esimo pixel en los bloques de la imagen. Y ahora viene 
-el punto clave: vamos a calcular los autovalores y autovectores. Cada autovector nos da una direcci\'on caracter\'istica de cambio y el autovalor correspondiente 
-(siempre $\geq$ 0) \footnote{}
+La matriz de covarianza muestral $\widehat{C}_{ij}$ nos habla de qu\'e tanto var\'ian juntos los niveles de gris del i-\'esimo y el j-\'esimo pixel en los bloques 
+de la imagen. Y ahora viene  el punto clave: vamos a calcular los autovalores y autovectores. Cada autovector nos da una direcci\'on caracter\'istica de cambio y 
+el autovalor correspondiente  (siempre $\geq$ 0) 
+
+\footnote{La matriz de covarianza tiene la particularidad de ser sim\'etrica y tener los elementos de la diagonal no negativos, por ser las 
+varianzas de cada variable aleatoria. Bas\'andose en estos datos, se puede demostrar que la matriz de covarianza es semi-definida positiva. Y una matriz semi-definida 
+positiva y sim\'etrica tiene todos sus autovalores mayores o iguales a cero.}
+
  nos dice qu\'e tan importante es el cambio en dicha direcci\'on. En el contexto de la imagen de Lena, cada autovector es una \textit{autoimagen}
 que nos habla de un esquema de cambio caracter\'istico de los niveles de gris de los bloques y cada autovalor nos habla de la importancia de ese esquema frente 
 a los dem\'as. \\
@@ -189,7 +222,10 @@ a los dem\'as. \\
 Vamos a unir todo esto con la compresi\'on de la imagen.Los autovectores conforman la base de $\mathbb{R}^{256}$ de la que habl\'abamos m\'as arriba. 
 Los autovalores nos dicen c\'omo elegir un subconjunto de esos autovectores: elegimos aquellos que tienen el mayor autovalor. \\
 
-Nuestro c\'odigo de Octave \ref{codigo-compresionBruta2} muestra c\'omo realizar la compresi\'on usando estas ideas. \\
+Nuestro c\'odigo de Octave (c\'odigo fuente \ref{compresionBruta2} muestra c\'omo realizar la compresi\'on usando estas ideas. \\
+
+El comienzo del programa es similar al m\'etodo de compresi\'on anterior. Seguimos exactamente los mismos pasos para obtener las matrices $b$, la matriz que tiene como 
+columnas los 1024 bloques de 256 elementos que representan la imagen, y $M$, la matriz que tiene como columnas 1024 copias del ``bloque promedio''.\\ 
 
 Podemos ver como se usa la función $cov$ para calcular la matrix de covarianza muestral $\widehat{C}$. A la que luego se le calculan los autovalores y autovectores
 utilizando una funci\'on recibida como par\'ametro del programa, $eig\_function$, que simplemente puede ser la funci\'on $eig$ de Octave o una definida por el usuario.
@@ -199,18 +235,16 @@ diagonal principal sea el vector ordenado. Una vez ordenados los autovalores, re
 donde $i$ es el vector de los \'indices originales que es una de las cosas que devuelve la funci\'on $sort$ al ordenar a los autovalores.\\
 
 Habiendo hecho esto, se procede a obtener las N proyecciones de los N autovectores correspondientes a los N autovalores más grandes. Esto se logra a través de la 
-l\'inea $pv(:,i) = V(:,i).' * ds;$. \\
+l\'inea $pv(:,i) = V(:,i).' * ds$. \\
 
 Luego, se le suman estas proyecciones a los valores de la matriz $M$ del caso anterior (y llam\'andola ahora $d$), la cual contiene el ``gris promedio'' para todos 
 los vectores. Esto se logra con un bloque $for$ de 1 a 1024, la cantidad de bloques en que dividimos la imagen, que se corresponde con la cantidad de columnas 
 de la matriz $d$. En cada iteración de dicho bloque $for$, se deben sumar las N proyeccciones deseadas. Para ello, se necesita otro bloque $for$ de 1 a N, la cantidad 
-de proyecciones. La suma de las proyecciones se consigue f\'acilmente mediante $d(:,k)\: += pv(k,i) * V(:,i);$. \\
+de proyecciones. La suma de las proyecciones se consigue f\'acilmente mediante $d(:,k)\: += pv(k,i) * V(:,i)$. \\
 
 Finalmente, s\'olo queda volver a juntar las columnas de la matriz $d$ en bloques no solapados para volver a formar la imagen. Esto se logra usando la funci\'on 
-$col2im$ de Octave, a la cual se le pasa como par\'ametro el tamaño de bloque, el de la matriz y un flag para indicar que se desean bloques no solapados. Como toque 
-final, los n\'umeros de la matriz resultante, la imagen comprimida, son redondeados y convertidos a enteros de 8 bits (para que queden en el rango 0 - 255).\\
-
-Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
+$col2im$ como lo hicimos anteriormente para la primera compresi\'on. Al igual que antes, se redondean y convierten a enteros de 8 bits los elementos de la matriz
+resultante, usando $uit8$.\\
 
 \begin{figure}
     \center \includegraphics[height=100pt]{bpositivo.png}
@@ -283,6 +317,6 @@ Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
 \end{thebibliography}
 
 \section*{Código Fuente}
-    \label{codigo-compresionBruta2}
-    \lstinputlisting[caption=compresionBruta2.m,mathescape=false]{../src/compresionBruta2.m}
+    \lstinputlisting[caption=compresionBruta1.m,label=compresionBruta1,mathescape=false]{../src/compresionBruta1.m}
+    \lstinputlisting[caption=compresionBruta2.m,label=compresionBruta2,mathescape=false]{../src/compresionBruta2.m}
 \end{document}
