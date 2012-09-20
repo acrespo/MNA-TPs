@@ -8,6 +8,6 @@ m = m.';
 M = repmat(m,1,1024);
 d = col2im(M,[16,16],[512,512], "distinct");
 meanimg = uint8(d);
-imshow(meanimg) % muestro la imagen ‘‘media’’
+imshow(meanimg) % muestro la imagen "media"
 
 end

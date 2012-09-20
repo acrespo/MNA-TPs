@@ -64,7 +64,7 @@
 \def\endkeywords{\par}
 
 \titleformat{\section}{\small\center\bfseries}{\thesection.}{0.5em}{\normalsize\uppercase}
-\titleformat{\subsection}{\small\center\bfseries}{}{0.5em}{\smallsize\uppercase}
+\titleformat{\subsection}{\small\center\bfseries}{}{0.5em}{\small\uppercase}
 \renewcommand{\thesection}{\Roman{section}}
 \renewcommand{\bibsection}{}
 
@@ -103,7 +103,9 @@
 \thispagestyle{fancy}
 
 \begin{customabstract}
-\textbf{Una cita: \cite{PHPBuch} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque adipiscing, orci non ultricies malesuada, lacus enim varius odio, a venenatis justo risus eu ante. Sed a nisi quam, ut placerat leo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.}
+\textbf{
+    Analizamos una serie de tecnicas de compresion de imagenes en blanco y negro.
+}
 \end{customabstract}
 
 \begin{keywords}
@@ -113,30 +115,8 @@ paper, paper, paper
 
 \section{Introducci\'on}
 
-    Nullam quis odio erat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean eu mauris ac augue volutpat pellentesque. Donec ultricies pulvinar ipsum sit amet pellentesque. Maecenas eget elit tortor. Donec in enim magna. Donec suscipit enim vitae erat dignissim fringilla nec eget metus. Praesent enim elit, gravida vitae feugiat in, vehicula a velit. Nunc non enim enim, eget accumsan nisl. Pellentesque malesuada velit eu tellus interdum dapibus. In ultricies est at neque imperdiet scelerisque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam blandit tempor aliquet. Nam id lacus lacus. Quisque venenatis risus id nunc bibendum hendrerit molestie turpis aliquet. Quisque sit amet sem ac leo iaculis tempus.
-
-    Mauris suscipit gravida justo a laoreet. Proin bibendum nunc eu augue tristique et volutpat enim sollicitudin. Sed sed nulla id metus ultricies sagittis ut et diam. Vestibulum nec nisi ac est euismod cursus ac ac augue. Nullam molestie sodales est, vel pretium libero cursus et. Etiam id elit justo, eu consequat erat. Duis vitae neque metus, sit amet suscipit urna. Vivamus scelerisque lorem eros.
-
 \section{Metodología}
 % Pueden ser varias secciones
-Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
-\begin{table}
-    \center
-    \begin{tabular}{c|c|c}
-            $t$ [secs] & $\beta$ & $\alpha_1$ \\ \hline \hline
-       0.0000000  &  0.000000  & -0.4510268 \\
-       0.0785398  &  0.785398  & -0.1532732 \\
-       0.1570796  &  1.570796  &  0.0131000 \\
-       0.2356194  &  2.356194  &  0.2125534 \\
-       0.3141592  &  3.141592  &  1.3363289 \\
-       0.3926990  &  3.926990  &  3.5220433 \\
-       0.4712388  &  4.712388  &  4.4038604 \\
-       0.5497787  &  5.497787  &  5.1487891 \\
-
-    \end{tabular}
-    \caption{Valores obtenidos para algunos instantes}
-    \label{tabla_segundo_punto}
-\end{table}
 
 \subsection{Compresi\'on bruta 1: la imagen media}
 
@@ -246,49 +226,12 @@ Finalmente, s\'olo queda volver a juntar las columnas de la matriz $d$ en bloque
 $col2im$ como lo hicimos anteriormente para la primera compresi\'on. Al igual que antes, se redondean y convierten a enteros de 8 bits los elementos de la matriz
 resultante, usando $uit8$.\\
 
-\begin{figure}
-    \center \includegraphics[height=100pt]{bpositivo.png}
-    \caption{Esta figura no muestra nada}
-\end{figure}
 
 \section{Resultados}
 % Podria ser Resultados y Conclusiones
-Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
-
-Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
-% Podria ser Resultados y Conclusiones
-Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
-
-Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
-% Podria ser Resultados y Conclusiones
-Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
-
-Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
-
-\begin{figure}
-    \center \includegraphics[height=100pt]{bpositivo.png}
-    \caption{Esta figura no muestra nada}
-\end{figure}
-
-Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
-\begin{figure}
-    \center \includegraphics[height=100pt]{bpositivo.png}
-    \caption{Esta figura no muestra nada}
-\end{figure}
-
-Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
 
 \section{Conclusiones}
-Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
-
-Fusce suscipit suscipit erat, et ultricies purus tincidunt sit amet. Sed ut mauris id nisl convallis mattis sit amet ut ante. Vivamus posuere faucibus urna vitae volutpat. Aliquam erat volutpat. Etiam molestie neque vel orci sodales in tincidunt ligula viverra. Aliquam erat volutpat. Morbi sit amet arcu dui. Vivamus eu tellus felis.
 % Podria ser Resultados y Conclusiones
-Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc nec elit id diam molestie gravida at sit amet ligula. Nulla id urna eget libero imperdiet aliquam. Integer feugiat elementum sem in euismod. Sed porta mollis magna, laoreet tincidunt est laoreet eget. Aenean nunc magna, iaculis eu imperdiet pellentesque, lobortis eu elit. Duis congue rutrum tellus, nec sodales ipsum sagittis ac. Aliquam et nibh vel justo lacinia luctus eu ut velit. Mauris vel justo mi, quis fermentum mi. Nunc sodales tellus quis magna aliquet vel adipiscing augue semper. Nunc facilisis pharetra elit in ornare. Sed quis nunc sagittis turpis fringilla laoreet at a magna.
-\begin{figure}
-    \center \includegraphics[height=100pt]{bpositivo.png}
-    \caption{Esta figura no muestra nada}
-\end{figure}
-
 
 \section*{Referencias}
 \begin{thebibliography}{99}
