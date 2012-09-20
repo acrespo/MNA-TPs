@@ -104,16 +104,30 @@
 
 \begin{customabstract}
 \textbf{
-    Analizamos una serie de tecnicas de compresion de imagenes en blanco y negro.
+    El siguiente art\'iculo busca analizar la compresi\'on de una imagen en blanco y negro a trav\'es de dos t\'ecnicas diferentes, una muy sencilla y otra
+    m\'as compleja que hace uso de autovalores y autovectores.
 }
 \end{customabstract}
 
 \begin{keywords}
-paper, paper, paper
+Compresi\'on de im\'agenes, \'Algebra Lineal, autovalor, autovector, Octave, factorizaci\'on QR, covarianza.
 \end{keywords}
 
 
 \section{Introducci\'on}
+
+El estudio de la compresi\'on de im\'agenes se centra en la reducci\'on de los datos redundantes y/o irrelevantes de la imagen permitir su almacenamiento
+o transmisi\'on de forma eficiente. Existen dos grande tipos de compresi\'on: con p\'erdida o sin p\'erdida.\\
+La compresi\'on sin p\'erdida es la preferida para propósitos de archivado y, a menudo, para imágenes médicas, dibujo técnico, clip art, o cómics. 
+Esto se debe a que los métodos de compresión con p\'erdida, especialmente cuando se utilizan a una tasa de bits muy baja, introducen artefactos de compresión.
+\footnote{Se denomina artefacto de compresi\'on a una distorsión apreciable del medio, ya sea imagen, video o sonido, causada por algoritmo de compresi\'on con 
+p\'erdida. La compresi\'on con p\'erdida implica entonces descartar parte de los datos para simplificar el medio que se intenta comprimir.}
+
+Los métodos con p\'erdida son especialmente adecuados para imágenes naturales tales como fotografías en aplicaciones donde es aceptable una p\'erdida menor
+ (a veces imperceptible) para lograr una reducción en la tasa de bits. La compresión con p\'erdidas que produce diferencias imperceptibles puede llamarse 
+visualmente sin p\'erdidas.\\
+
+Este art\'iculo busca combinar conocimientos del \'Algebra Lineal para construir un algoritmo para comprimir una imagen.\\
 
 \section{Metodología}
 % Pueden ser varias secciones
@@ -191,9 +205,7 @@ donde
 
 La matriz de covarianza muestral $\widehat{C}_{ij}$ nos habla de qu\'e tanto var\'ian juntos los niveles de gris del i-\'esimo y el j-\'esimo pixel en los bloques 
 de la imagen. Y ahora viene  el punto clave: vamos a calcular los autovalores y autovectores. Cada autovector nos da una direcci\'on caracter\'istica de cambio y 
-el autovalor correspondiente  (siempre $\geq$ 0) 
-
-\footnote{La matriz de covarianza tiene la particularidad de ser sim\'etrica y tener los elementos de la diagonal no negativos, por ser las 
+el autovalor correspondiente  (siempre $\geq$ 0) \footnote{La matriz de covarianza tiene la particularidad de ser sim\'etrica y tener los elementos de la diagonal no negativos, por ser las 
 varianzas de cada variable aleatoria. Bas\'andose en estos datos, se puede demostrar que la matriz de covarianza es semi-definida positiva. Y una matriz semi-definida 
 positiva y sim\'etrica tiene todos sus autovalores mayores o iguales a cero.}
 
@@ -241,24 +253,41 @@ resultante, usando $uit8$.\\
 
 \lena{512}{La imagen original de Lena}
 
-\lena{-bruta}{El resultado de aplicar la primer compresion (\ref{sec:compresion1})}
+\lena{-bruta}{El resultado de aplicar la primer compresi\'on (\ref{sec:compresion1})}
 
-\lena{-eig-1}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 1 autovector}
-\lena{-eig-2}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 2 autovectores}
-\lena{-eig-3}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 3 autovectores}
-\lena{-eig-4}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 4 autovectores}
-\lena{-eig-16}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 16 autovectores}
-\lena{-eig-32}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 32 autovectores}
-\lena{-eig-128}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 128 autovectores}
+\lena{-eig-1}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 1 autovector}
+\lena{-eig-2}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 2 autovectores}
+\lena{-eig-3}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 3 autovectores}
+\lena{-eig-4}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 4 autovectores}
+\lena{-eig-16}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 16 autovectores}
+\lena{-eig-32}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 32 autovectores}
+\lena{-eig-128}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 128 autovectores}
 
-\lena{-qr-1}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con un solo autovector y nuestra implementacion del metodo QR}
+\lena{-qr-1}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con un solo autovector y nuestra implementaci\'on del m\'etodo QR}
 
 
 \section{Conclusiones}
 % Podria ser Resultados y Conclusiones
 
+Es claro que la primer t\'ecnica de compresi\'on no es de gran utilidad. Se logra reducir enormemente la cantidad de datos, pero el resultado es algo
+totalmente diferente a nuestra imagen. Se descartan demasiados datos, haciendo imposible la reproducci\'on de la imagen original.\\
+
+La segunda t\'ecnica, en cambio, es mucho m\'as vers\'atil y completa, ya que permite modificar el ``grado'' de compresi\'on, modificando la cantidad de 
+autovalores. Esto impacta, como se ha visto, directamente en la calidad de la imagen.\\
+
+Cabe destacar adem\'as, que la performance de esta segunda t\'ecnica est\'a muy vinculada a la performance de la funci\'on que calcula autovalores y autovectores.
+Dependiendo de la exactitud con que devuelva estos valores, la imagen ser\'a de mayor o menor calidad. Tambi\'en es cierto que al tratarse de imagenes de un tamaño 
+relativamente grande, las cantidad de operaciones de esta funci\'on incrementar\'a enormemente, por lo que se torna importante el estudio de complejidad del 
+m\'etodo obtenci\'on de autovalores y autovectores.\\ 
+
+
 \section*{Referencias}
 \begin{thebibliography}{99}
+    
+    \bibitem{Manual_Octave} Manual de Usuario de GNU Octave.
+    \bibitem{Wikipedia_Image_compression} http://en.wikipedia.org/wiki/Image\_compression
+    \bibitem{Wikipedia_Compression_artifact} http://en.wikipedia.org/wiki/Compression\_artifact
+
     \bibitem{Libro_Visual} Francisco Javier Ceballos: Enciclopedia de Microsoft Visual
         Basic. Editorial Ra-Ma. Madrid, 1999.
     \bibitem{PHPBuch} Dieter Staas: PHP 5 Espresso!. Franzis Verlag GmbH.
