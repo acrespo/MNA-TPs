@@ -116,26 +116,29 @@ compresi\'on de im\'agenes, \'algebra lineal, probabilidad, autovector, factoriz
 
 \section{Introducci\'on}
 
-El estudio de la compresi\'on de im\'agenes se centra en la reducci\'on de los datos redundantes de la imagen con el objetivo de transmitir la mayor cantidad de información con un menor uso de datos. Los formatos de compresi\'on se dividen en dos campos: aquellos que durante la codificación presentan p\'erdida de información (alterando la imágen en el proceso) y aquellos que respetan fielmente la imágen original.
-
-En las siguientes secciones se presentan dos métodos con pérdida de información, que para ciertos usos vuelven imperceptibles la pérdida de fidelidad de la imágen. Un campo en donde es muy frecuente el uso de algoritmos con pérdida de información es el de la fotografía no profesional, donde la calidad de la imágen no es un requisito fundamental.
+El estudio de la compresi\'on de im\'agenes se centra en la reducci\'on de los datos redundantes de la imagen con el objetivo de transmitir la mayor cantidad de información con un menor uso de datos. Los formatos de compresi\'on se dividen en dos campos: aquellos que durante la codificación presentan p\'erdida de información (alterando la imágen en el proceso) y aquellos que respetan fielmente la imágen original. 
+En las siguientes secciones se presentan dos métodos con pérdida de información. 
 
 Los métodos de compresión con p\'erdida introducen artefactos de compresión\footnote{Se denomina artefacto de compresi\'on a una distorsión de la imagen causada por algoritmo de compresi\'on con p\'erdida. La compresi\'on con p\'erdida implica entonces descartar parte de los datos para disminuir el tamaño de datos necesarios para representar la imagen.}: no son fieles a la imágen original debido a decisiones que se toman para reducir la densidad de bits necesarios por pixel de la imágen.
 
-% Acordarse de describir las secciones que siguen aca
+Primero, en la seccion \ref{sec:tecnica} se explica la tecnica utilizada para juzgar un metodo de compresion.
+En las secciones \ref{sec:compresion1} y \ref{sec:compresion2} se describen los metodos a analizar. 
+Finalmente, la seccion \ref{sec:resultados} se muestran los resultados de los metodos y del analisis de cada uno.
 
-\section{Metodología}
+\section{Tecnica de analisis}
+\label{sec:tecnica}
 
-Se utiliz\'o la imagen estandar en el campo de tratamiento de im\'agenes, referida como ``la imagen de Lena'' \cite{lena} \cite{lenaweb}. Con el objeto de evidenciar la pérdida de información se realizó una comparación entre la imagen original y las comprimidas mediante dos índices comunes en el campo, el error cuadrático medio\footnote{El error cuadrático medio es el promedio de los cuadrados de las diferencias entre los valores de los pixels de las dos imágenes} y el PSNR\footnote{\textit{Peak Signal to Noise Ratio}, \cite{PSNR}}.
+Se utiliz\'o la imagen estandar en el campo de tratamiento de im\'agenes, referida como ``la imagen de Lena'' \cite{lena} \cite{lenaweb}. Con el objeto de evidenciar la pérdida de información se realizó una comparación entre la imagen original y las comprimidas mediante dos índices comunes en el campo, el error cuadrático medio\footnote{El error cuadrático medio es el promedio de los cuadrados de las diferencias entre los valores de los pixels de las dos imágenes} y el PSNR\footnote{\textit{Peak Signal to Noise Ratio}, \cite{PSNR}}. Se puede encontrar la implementacion utilizada en anexada \ref{code:distancia}.
 
-\subsection{Compresi\'on 1: la imagen media}
+valores aceptables para transmisión inalámbrica son en el rango de 20 a 25, para fotografías un valor aceptable debe ser mayor a 35, cuanto más alto el valor, mayor es la similitud entre dos imágenes
+% Explicar el algoritmo
+
+\section{Compresi\'on 1: la imagen media}
 \label{sec:compresion1}
 
-Se comprimió la imagen utilizando el siguiente algoritmo: dividir la imagen en bloques no solapados, tomar el valor medio para cada bloque y describir la imagen con el valor esperado por bloque. Este algoritmo, que se puede describir como un algoritmo de reducción de la imágen, causó la mayor pérdida de información entre los métodos utilizados, con un error cuadrático medio de $2290$ y un PSNR de $14.185 dB$, lo cual no es aceptable (valores aceptables para transmisión inalámbrica son en el rango de 20 a 25, para fotografías un valor aceptable debe ser mayor a 35, cuanto más alto el valor, mayor es la similitud entre dos imágenes).
+Se comprimió la imagen utilizando el siguiente algoritmo: dividir la imagen en bloques no solapados, tomar el valor medio para cada bloque y describir la imagen con el valor esperado por bloque. Para la imagen de prueba, de una resolución original de $512 \times 512$, se dividió la imágen en $1024$ bloques de $16x16$. El resultado fué una reducción de los datos necesarios para la representación de la imágen de $256$ \textit{kilobytes} a $256$ \textit{bytes}. El código para lograr esto se encuentra anexado\ref{code:compresionBruta1}.
 
-Para la imagen de prueba, de una resolución original de $512 \times 512$, se dividió la imágen en $1024$ bloques de $16x16$. El resultado fué una reducción de los datos necesarios para la representación de la imágen de $256$ \textit{kilobytes} a $256$ \textit{bytes}. El código para lograr esto se encuentra anexado\ref{code:compresionBruta1}.
-
-\subsubsection{Descripción del Algoritmo en Octave}
+\subsection{Descripción del Algoritmo en Octave}
 
 La funci\'on $imread$ lee im\'agenes en matrices. Al tratarse de una imagen de $512 \times 512$ en escala de grises, el resultado es una matriz de $512$ filas y $512$ columnas en el que cada elemento es un entero que puede ser de 8 o 16 bits. La funci\'on $im2col$ toma esa matriz y la divide en bloques de alg\'un tamaño dado en columnas seg\'un el modo que se desee (en nuestro caso, nos interesa que los bloqueas no se solapen). El resultado es una matriz que se denomina $b$, de 256 filas y 1024 columnas. Se puede decir que la matriz $b$ tiene en cada columna un vector asociado a un bloque. 
 
@@ -143,7 +146,7 @@ Luego se procede a calcular la media aritm\'etica para los bloques. Para esto se
 
 La reconstrucción de la imágen a partir de esta matriz se describe en las líneas $9$ y $10$: la función $col2im$ tiene una funcionalidad inversa a $im2col$, recibiendo una matriz y reagrupando sus columnas en bloques de un tamaño (también parámetro de la función) según un criterio (el utilizado en este caso es no solapar los bloques). El algoritmo utiliza como argumento para esta función: la matriz cuyas columnas representen los bloques de la matriz (e imagen) final. Trasponiendo el vector $m$, y replicándolo de forma de lograr tener la cantidad de bloques necesarios utilizando la funci\'on $repmat$\footnote{$repmat$ forma una matriz de un tamaño dado con copias de una matriz otorgada como parámetro} se obtiene la matriz a ser utilizada con la función $col2im$. Como último paso, este algoritmo utiliza la función $uint8$ para poder visualizar la imagen.
 
-\subsection{Compresi\'on 2: PCA}
+\section{Compresi\'on 2: PCA}
 \label{sec:compresion2}
 
 Desde el punto de vista del  \'algebra lineal, la imagen dividida en bloques de 16 x 16, como en el caso anterior, se puede considerar simplemente como
@@ -200,45 +203,61 @@ Finalmente, s\'olo queda volver a juntar las columnas de la matriz $d$ en bloque
 $col2im$ como se utilizó para la primera compresi\'on.
 
 \section{Resultados}
+\label{sec:resultados}
 % Podria ser Resultados y Conclusiones
 
 \newcommand{\lena}[2]{
     \begin{figure}[H]
-        \label{lena#1}
         \includegraphics[width=\linewidth]{images/lena#1.png}
         \caption{#2}
+        \label{fig:lena#1}
     \end{figure}
 }
 
 \lena{512}{La imagen original de Lena}
 
+\subsection{Compresi\'on 1}
+
 \lena{-bruta}{El resultado de aplicar la primer compresi\'on (\ref{sec:compresion1})}
+
+\subsection{Compresi\'on 2}
 
 \lena{-eig-1}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 1 autovector}
 \lena{-eig-2}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 2 autovectores}
 \lena{-eig-3}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 3 autovectores}
 \lena{-eig-4}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 4 autovectores}
-\lena{-eig-16}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 16 autovectores}
-\lena{-eig-32}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 32 autovectores}
-\lena{-eig-128}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con 128 autovectores}
+
+\subsection{Compresi\'on 2 con metodo QR}
 
 \lena{-qr-1}{El resultado de aplicar la segunda compresi\'on (\ref{sec:compresion2}) con un solo autovector y nuestra implementaci\'on del m\'etodo QR}
 
+\subsection{Resultados del analisis \textit{Peak Signal to Noise Ratio}}
 
-\section{Conclusiones}
-% Podria ser Resultados y Conclusiones
+\begin{table}[H]
+    \begin{tabular}{l|c|c}
+        Imagen & Error cuadratico medio & PSNR \\
+        \hline
 
+        Figura \ref{fig:lena-bruta} & 2290 & 14.18 \\
+        Figura \ref{fig:lena-eig-1} & 514  & 20.67 \\
+        Figura \ref{fig:lena-eig-2} & 316  & 22.78 \\
+        Figura \ref{fig:lena-eig-3} & 257  & 23.68 \\
+        Figura \ref{fig:lena-eig-4} & 209  & 24.58 \\
+        Figura \ref{fig:lena-qr-1}  & 514  & 20.67 \\
+
+    \end{tabular}
+    \caption{Resultados obtenidos de aplicar el algoritmo PSNR a las imagenes obtenidas}
+    \label{tab:psnr}
+\end{table}
+
+En la tabla \ref{tab:psnr} se puede observar la calidad de los distintos metodos de compresion.
+El resulta para el primer algoritmo, que se puede describir como un algoritmo de reducción de la imágen, causó la mayor pérdida de información entre los métodos utilizados, con un error cuadrático medio de $2290$ y un PSNR de $14.185 dB$, lo cual no es aceptable.
 Es claro que la primer t\'ecnica de compresi\'on no es de gran utilidad. Se logra reducir enormemente la cantidad de datos, pero el resultado es algo
-totalmente diferente a nuestra imagen. Se descartan demasiados datos, haciendo imposible la reproducci\'on de la imagen original.\\
+totalmente diferente a nuestra imagen. Se descartan demasiados datos, haciendo imposible la reproducci\'on de la imagen original.
 
-La segunda t\'ecnica, en cambio, es mucho m\'as vers\'atil y completa, ya que permite modificar el ``grado'' de compresi\'on, modificando la cantidad de 
-autovalores. Esto impacta, como se ha visto, directamente en la calidad de la imagen.\\
-
-Cabe destacar adem\'as, que la performance de esta segunda t\'ecnica est\'a muy vinculada a la performance de la funci\'on que calcula autovalores y autovectores.
-Dependiendo de la exactitud con que devuelva estos valores, la imagen ser\'a de mayor o menor calidad. Tambi\'en es cierto que al tratarse de imagenes de un tamaño 
-relativamente grande, las cantidad de operaciones de esta funci\'on incrementar\'a enormemente, por lo que se torna importante el estudio de complejidad del 
-m\'etodo obtenci\'on de autovalores y autovectores.\\ 
-
+La segunda t\'ecnica, en cambio, es mucho m\'as vers\'atil y completa, ya que permite modificar el ``grado'' de compresi\'on, modificando la cantidad de autovalores. 
+Esto impacta, como se ha visto, directamente en la calidad de la imagenes resultantes.
+Se puede observar en la tabla \ref{tab:psnr} como se incrementa el PNSR a medida que se incrementa la cantidad de autovectores utilizados, llegando al limite de los valores aceptados para transmision inalambrica con 4 autovectores.
 
 \section*{Referencias}
 \begin{thebibliography}{99}
@@ -253,7 +272,9 @@ m\'etodo obtenci\'on de autovalores y autovectores.\\
 
 \end{thebibliography}
 
-\section*{Código Fuente}
+\newpage
+\section*{Anexo: Código Fuente}
     \lstinputlisting[caption=compresionBruta1.m,label=code:compresionBruta1,mathescape=false]{../src/compresionBruta1.m}
     \lstinputlisting[caption=compresionBruta2.m,label=code:compresionBruta2,mathescape=false]{../src/compresionBruta2.m}
+    \lstinputlisting[caption=distancia.m,label=code:distancia,mathescape=false]{../src/distance.m}
 \end{document}
