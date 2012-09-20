@@ -1,7 +1,6 @@
 function [Q, T] = metodoQR(A)
 
     [n, m] = size(A);
-    %T = hess(A);
     T = A;
 
     iterations = 0;
