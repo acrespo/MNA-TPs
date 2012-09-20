@@ -130,17 +130,34 @@ Finalmente, la seccion \ref{sec:resultados} se muestran los resultados de los me
 
 Se utiliz\'o la imagen estandar en el campo de tratamiento de im\'agenes, referida como ``la imagen de Lena'' \cite{lena} \cite{lenaweb}.
 Con el objeto de evidenciar la pérdida de información se realizó una comparación entre la imagen original y las comprimidas mediante dos índices comunes en el campo, el error cuadrático medio\footnote{El error cuadrático medio es el promedio de los cuadrados de las diferencias entre los valores de los pixels de las dos imágenes} y el PSNR\footnote{\textit{Peak Signal to Noise Ratio}, \cite{PSNR}}.  
-Se puede encontrar la implementacion utilizada anexada (\ref{code:distancia}).
 
-Dado que no se hace uso del error cuadratico medio como herramienta directa de analisis, no se va a entrar en detalle sobre el significado del mismo.
+Dado que no se hace uso del error cuadratico medio como herramienta directa de analisis, no se va a entrar en detalle sobre el significado del mismo. La formula para su calculo es:
+
+\begin{equation}
+    \label{eq:mean_error}
+    MSE = \frac{1}{m n} \sum_{i=0}^{m -1} \sum_{j = 0}^{n -1} [ I(i, j) - K(i, j) ]^2
+\end{equation}
+
+Donde $n$ y $m$ representan el ancho y alto de la imagen, $I$ la imagen comprimida y $K$ la imagen original.
 
 El calculo de \textit{Peak Signal to Noise Ratio} es utilizado para analizar la calidad de un metodo de compresion.
 Para esto, trata la imagen como una señal, y calcula la proporcion entre el valor maximo de la señal y la corrupcion de la imagen.
 El resultado se expresa en una escala logaritmica, y se dice que una compresion es de mejor calidad cuanto mas grande el resultado.
 Se debe notar que si la compresion no produce error, el PSNR no esta definido.
+La formula para calcularlo viene dada por:
+
+\begin{equation}
+    \label{eq:psnr}
+    PSNR = 20 log_{10}(MAX_I) - 10 log_{10}(MSE)
+\end{equation}
 
 Valores aceptables para transmisión inalámbrica son en el rango de 20 a 25 \cite{Wikipedia_PSNR}.
 Para compresion de imagenes y video se suele considerar un valor entre 30 y 50.
+
+Se puede encontrar la implementacion utilizada anexada (\ref{code:distancia}).
+Primero se carga ambas imagenes, la original y la comprimida.
+Con esto, se procede a calcular el error cuadratico medio segun la ecuacion \ref{eq:mean_error},y determinar el valor maximo de la señal.
+Finalmente, se calcula el PSNR segun la ecuacion \ref{eq:psnr}.
 
 % Explicar el algoritmo
 
