@@ -1,6 +1,8 @@
 *~
 .*.swp
 
+*-core
+
 # Ignore latex generated files
 *.backup
 *.aux
