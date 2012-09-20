@@ -170,28 +170,22 @@ La reconstrucción de la imágen a partir de esta matriz se describe en las lín
 \section{Compresi\'on 2: PCA}
 \label{sec:compresion2}
 
-Desde el punto de vista del  \'algebra lineal, la imagen dividida en bloques de 16 x 16, como en el caso anterior, se puede considerar simplemente como
-1024 vectores de 256 elementos cada uno (la matriz b del código). Es decir, se tienen vectores en $\mathbb{R}^{256}$ . Dada una base cualquiera de $\mathbb{R}^{256}$,
- que cuenta con 256 vectores linealmente independientes, se puede representar cada uno de los bloques de la imagen por su proyecci\'on sobre cada vector en la base. 
-Para transmitir la imagen a un tercero, se le puede dar la base y los 256 n\'umeros correspondientes a la proyeccci\'on sobre cada vector de la misma, y el mismo podrá reconstruir la imágen.
+La imagen dividida en bloques de $16 \times 16$, como en el caso anterior, se puede considerar como 1024 vectores de 256 elementos cada uno (la matriz $b$ del código). Es decir, se tienen vectores en $\mathbb{R}^{256}$ . Dada una base cualquiera de $\mathbb{R}^{256}$, que cuenta con 256 vectores linealmente independientes, se puede representar cada uno de los bloques de la imagen por su proyecci\'on sobre cada vector en la base.  Para transmitir la imagen a un tercero, se le puede dar la base y los 256 n\'umeros correspondientes a la proyeccci\'on sobre cada vector de la misma, y el mismo podrá reconstruir la imágen.
 
-Para reducir el problema, se utilizadron $N < 256$ vectores linealmente independientes en la base. De esta manera, para comunicar la imagen s\'olo
-se deben transmitir N vectores en la base y N n\'umeros por cada bloque. En este proceso se pierde calidad de la imagen, dado que usando s\'olo N vectores no se puede representar todo $\mathbb{R}^{256}$ y la 
-imagen comunicada no será exactamente igual a la original. Se plantea entonces el interrogante de cómo elegir los N vectores de manera de minimizar la p\'erdida 
-de calidad de la imagen. Se utiliza una técnica denominada \textit{Principal Component Analysis}\cite[PCA] para esto.
+Para reducir el problema, se utilizaron $N < 256$ vectores linealmente independientes en la base. De esta manera, para comunicar la imagen s\'olo se deben transmitir N vectores en la base y N n\'umeros por cada bloque. En este proceso se pierde calidad de la imagen, dado que usando s\'olo N vectores no se puede representar todo $\mathbb{R}^{256}$ y la imagen comunicada no será exactamente igual a la original. Se plantea entonces el interrogante de cómo elegir los N vectores de manera de minimizar la p\'erdida de calidad de la imagen. Se utiliza una técnica denominada \textit{Principal Component Analysis}\cite[PCA] para esto.
 
-Se recuerda el concepto de covarianza de dos variables aleatorias:
+La covarianza de dos variables aleatorias está definida como:
 
 \begin{equation}
     cov(Y, Z) = E [(Y - E(Y )) (Z - E(Z))]
 \end{equation}
 
-(donde $E(x)$ es la esperanza matem\'atica o valor esperado) para considerar a cada uno de los 256 n\'umeros que representan el nivel de gris de un pixel en un bloque como un variable aleatoria.
-Se llama $X_{i}, i = 1, 2, \dotsc, 256$, a dichas variables aleatorias. Luego, se define una matriz $C = (C_{ij} )$ de la siguiente manera:
+(donde $E(x)$ es la esperanza matem\'atica o valor esperado) para considerar a cada uno de los 256 n\'umeros que representan el nivel de gris de un pixel en un bloque como un variable aleatoria.  Se llama $X_{i}, i = 1, 2, \dotsc, 256$ a dichas variables aleatorias. Luego, se define una matriz $C = (C_{ij} )$ de la siguiente manera:
 
 \begin{equation}
     C_{ij} = Cov(X_{i}, X_{j})
 \end{equation}
+
 A $\textbf{C}$ se la denomina matriz de covarianza.
 
 Dado que no se puede utilizar una distribución de probabilidad para calcular la matriz de covarianza, se utilizan las 1024 muestras por bloque para calcular la matriz de covarianza muestral $\widehat{C} = (\widehat{C}_{ij})$:
@@ -208,20 +202,19 @@ donde
     \[ \widehat{x}_{i} = \frac{1}{1024} \sum_{k=1}^{1024} x_{ik} \]
 \end{itemize}
 
-Se calculan los autovalores y autovectores para esta matriz. Cada autovector nos da una direcci\'on caracter\'istica de cambio y el autovalor correspondiente  (siempre $\geq$ 0) \footnote{La matriz de covarianza tiene la particularidad de ser sim\'etrica y tener los elementos de la diagonal no negativos, por ser las varianzas de cada variable aleatoria. Bas\'andose en estos datos, se puede demostrar que la matriz de covarianza es semi-definida positiva. Y una matriz semi-definida positiva y sim\'etrica tiene todos sus autovalores mayores o iguales a cero.} da una medida de qu\'e tan importante es el cambio en dicha direcci\'on. En el contexto de la imagen de Lena, cada autovector es una \textit{autoimagen} con información respecto a un esquema de cambio caracter\'istico de los niveles de gris de los bloques y cada autovalor cuantifica la importancia de ese esquema frente a los dem\'as.
+Se calculan los autovalores y autovectores para esta matriz. Cada autovector nos da una direcci\'on caracter\'istica de cambio y el autovalor correspondiente  (siempre mayores o iguales a 0) \footnote{La matriz de covarianza tiene la particularidad de ser sim\'etrica y tener los elementos de la diagonal no negativos, por ser las varianzas de cada variable aleatoria. Bas\'andose en estos datos, se puede demostrar que la matriz de covarianza es semi-definida positiva. Una matriz semi-definida positiva y sim\'etrica tiene todos sus autovalores mayores o iguales a cero.} da una medida de qu\'e tan importante es el cambio en dicha direcci\'on. En el contexto de la imagen de Lena, cada autovector es una \textit{autoimagen} con información respecto a un esquema de cambio caracter\'istico de los niveles de gris de los bloques y cada autovalor cuantifica la importancia de ese esquema frente a los dem\'as.
 
 Aplicando estos conceptos a la compresión de la imagen, los autovectores conforman la base de $\mathbb{R}^{256}$ previamente definida, y muestran cómo elegir un subconjunto de estos para utilizar en la compresión de la imagen: aquellos que tengan el mayor autovalor.
 
-El código fuente \ref{code:compresionBruta2} muestra como realizar la compresión utilizando estas ideas. El concepto del programa es similar al anterior. Se obtiene la misma matriz $b$ con 256 filas con los valores de cada bloque. Se utiliza la función $cov$ para calcular la matriz de covarianza muestral. Se calculan los autovalores y autovectores utilizando una función recibida como parámetro ($eig\_function$), la cual puede ser la función $eig$ de \textit{Octave} o una definida por el usuario. Utilizando la función $diag$ se extrae en un vector los autovalores de la diagonal de la matriz $D$ retornada por $eig\_function$. Dicho vector es ordenado de mayor a menod de forma descendente con la función $sort$, y se reutiliza la función $diag$ para obtener una matriz diagonal cuya diagonal principal sea el vector ordenado.
+El código fuente \ref{code:compresionBruta2} muestra cómo realizar la compresión utilizando estas ideas. El concepto del programa es similar al anterior. Se obtiene la misma matriz $b$ con 256 filas con los valores de cada bloque. Se utiliza la función $cov$ para calcular la matriz de covarianza muestral. Se calculan los autovalores y autovectores utilizando una función recibida como parámetro ($eig\_function$), la cual puede ser la función $eig$ de \textit{Octave} o una definida por el usuario. Utilizando la función $diag$ se extrae en un vector los autovalores de la diagonal de la matriz $D$ retornada por $eig\_function$. Dicho vector es ordenado de mayor a menod de forma descendente con la función $sort$, y se reutiliza la función $diag$ para obtener una matriz diagonal cuya diagonal principal sea el vector ordenado.
 
 Una vez ordenados los autovalores, se ordenan de la misma forma los autovectores. Se consiguen mediante la línea de \textit{Octave} \texttt{V = V(:,i)}, donde $i$ es el vector de los índices originales retornados por la función $sort$ al ordenar.
 
 Luego se procede a obtener las $N$ proyecciones de los autovectores correspondientes a los $N$ autovalores más grandes. Esto se logra con la línea \texttt{pv(:,i) = V(:,i).' * ds}
 
-Luego, se le suman estas proyecciones a los valores de la matriz $M$ del caso anterior (y llam\'andola ahora $d$), la cual contiene el ``gris promedio'' para todos los vectores. Esto se logra con un bloque $for$ de 1 a 1024, la cantidad de bloques en que se dividió la imagen, que se corresponde con la cantidad de columnas de la matriz $d$. En cada iteración de dicho bloque $for$, se deben sumar las N proyeccciones deseadas. Para ello, se necesita otro bloque $for$ de 1 a N, la cantidad de proyecciones. La suma de las proyecciones se consigue mediante \texttt{d(:,k)\: += pv(k,i) * V(:,i)}
+Se suman estas proyecciones a los valores de la matriz $M$ del caso anterior (y llam\'andola ahora $d$), la cual contiene el ``gris promedio'' para todos los vectores. Esto se logra con un bloque $for$ de 1 a 1024, la cantidad de bloques en que se dividió la imagen, que se corresponde con la cantidad de columnas de la matriz $d$. En cada iteración de dicho bloque $for$, se deben sumar las N proyeccciones deseadas. Para ello, se necesita otro bloque $for$ de 1 a 1000, la cantidad de proyecciones. La suma de las proyecciones se consigue mediante \texttt{d(:,k)\: += pv(k,i) * V(:,i)}
 
-Finalmente, s\'olo queda volver a juntar las columnas de la matriz $d$ en bloques no solapados para volver a formar la imagen. Esto se logra usando la funci\'on 
-$col2im$ como se utilizó para la primera compresi\'on.
+Finalmente, s\'olo queda volver a juntar las columnas de la matriz $d$ en bloques no solapados para volver a formar la imagen. Esto se logra usando la funci\'on $col2im$ como se utilizó para la primera compresi\'on.  
 
 \section{Resultados}
 \label{sec:resultados}
@@ -283,12 +276,10 @@ $col2im$ como se utilizó para la primera compresi\'on.
 \end{table}
 
 En la tabla \ref{tab:psnr} se puede observar la calidad de los distintos metodos de compresión.
-El resulta para el primer algoritmo, que se puede describir como un algoritmo de reducción de la imágen, causó la mayor pérdida de información entre los métodos utilizados, con un error cuadrático medio de $2290$ y un PSNR de $14.185 dB$, lo cual no es aceptable.
-Es claro que la primer t\'ecnica de compresi\'on no es de gran utilidad. Se logra reducir enormemente la cantidad de datos, pero el resultado es algo
-totalmente diferente a nuestra imagen. Se descartan demasiados datos, haciendo imposible la reproducci\'on de la imagen original.
+El resultado para el primer algoritmo, que se puede describir como un algoritmo de reducción de la imágen, causó la mayor pérdida de información entre los métodos utilizados, con un error cuadrático medio de $2290$ y un PSNR de $14.185 dB$, lo cual no es aceptable.
+Es claro que la primer t\'ecnica de compresi\'on muestra un valor inaceptable de pérdida de información, lo cual se puede apreciar a simple vista y es reforzado por el bajo valor de $PSNR$. Se logra reducir abruptamente la cantidad de datos (en un factor de 1000), pero el resultado es inaceptable. Se descartan demasiados datos, haciendo imposible la reproducci\'on de la imagen original.
 
-La segunda t\'ecnica, en cambio, es mucho m\'as vers\'atil y completa, ya que permite modificar el ``grado'' de compresi\'on, modificando la cantidad de autovalores. 
-Esto impacta directamente en la calidad de la imagenes resultantes (incluídas en el anexo). Se puede observar en la tabla \ref{tab:psnr} cómo se incrementa el PNSR a medida que aumenta la cantidad de autovectores utilizados.
+La segunda t\'ecnica, en cambio, es mucho m\'as vers\'atil y completa, ya que permite modificar el ``grado'' de compresi\'on mediante la cantidad de autovalores a utilizar.  Esto impacta directamente en la calidad de las imágenes resultantes (incluídas en el anexo). Se puede observar en la tabla \ref{tab:psnr} cómo se incrementa el PNSR a medida que aumenta la cantidad de autovectores utilizados.
 
 \section*{Referencias}
 \begin{thebibliography}{99}
