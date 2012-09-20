@@ -126,7 +126,7 @@ Una forma muy simple de comprimir una imagen es la siguiente. Dividir la imagen 
 hay 1024 bloques: dar la imagen es equivalente a dar 256 n\'umeros por cada bloque. Una forma burda de comprimir la imagen es dar lo mismos 256 n\'umeros para todos 
 los bloques, comprimiendo la imagen (con p\'erdida obviamente) de 256 kbytes a 256 bytes. Una posibilidad es dar los valores correspondientes a un ``bloque promedio''.\\
 
-Nuestro c\'odigo de Octave (c\'odigo fuente \ref{compresionBruta1}) permite realizar dicha operaci\'on. \\
+Nuestro c\'odigo de Octave (c\'odigo fuente \ref{code:compresionBruta1}) permite realizar dicha operaci\'on. \\
 
 La funci\'on $imread$ lee im\'agenes en matrices. Al tratarse en este caso de una imagen de 512 x 512 en escala de grises, el resultado es una matriz de 512 filas y 
 512 columnas en el que cada elemento es un entero que puede ser de 8 o 16 bits. La funci\'on $im2col$ toma esa matriz y divide en bloques de alg\'un tamaño dado en 
@@ -211,7 +211,7 @@ a los dem\'as. \\
 Vamos a unir todo esto con la compresi\'on de la imagen.Los autovectores conforman la base de $\mathbb{R}^{256}$ de la que habl\'abamos m\'as arriba. 
 Los autovalores nos dicen c\'omo elegir un subconjunto de esos autovectores: elegimos aquellos que tienen el mayor autovalor. \\
 
-Nuestro c\'odigo de Octave (c\'odigo fuente \ref{compresionBruta2} muestra c\'omo realizar la compresi\'on usando estas ideas. \\
+Nuestro c\'odigo de Octave (c\'odigo fuente \ref{code:compresionBruta2}) muestra c\'omo realizar la compresi\'on usando estas ideas. \\
 
 El comienzo del programa es similar al m\'etodo de compresi\'on anterior. Seguimos exactamente los mismos pasos para obtener las matrices $b$, la matriz que tiene como 
 columnas los 1024 bloques de 256 elementos que representan la imagen, y $M$, la matriz que tiene como columnas 1024 copias del ``bloque promedio''.\\ 
@@ -291,6 +291,6 @@ resultante, usando $uit8$.\\
 \end{thebibliography}
 
 \section*{Código Fuente}
-    \lstinputlisting[caption=compresionBruta1.m,label=compresionBruta1,mathescape=false]{../src/compresionBruta1.m}
-    \lstinputlisting[caption=compresionBruta2.m,label=compresionBruta2,mathescape=false]{../src/compresionBruta2.m}
+    \lstinputlisting[caption=compresionBruta1.m,label=code:compresionBruta1,mathescape=false]{../src/compresionBruta1.m}
+    \lstinputlisting[caption=compresionBruta2.m,label=code:compresionBruta2,mathescape=false]{../src/compresionBruta2.m}
 \end{document}
