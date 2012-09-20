@@ -65,7 +65,6 @@
 
 \titleformat{\section}{\small\center\bfseries}{\thesection.}{0.5em}{\normalsize\uppercase}
 \titleformat{\subsection}{\small\center\bfseries}{}{0.5em}{\small\uppercase}
-\renewcommand{\thesection}{\Roman{section}}
 \renewcommand{\bibsection}{}
 
 % TITLE Configuration
@@ -129,6 +128,8 @@ visualmente sin p\'erdidas.\\
 
 Este art\'iculo busca combinar conocimientos del \'Algebra Lineal para construir un algoritmo para comprimir una imagen.\\
 
+% Acordarse de describir las secciones que siguen aca
+
 \section{Metodología}
 % Pueden ser varias secciones
 
@@ -139,7 +140,7 @@ Una forma muy simple de comprimir una imagen es la siguiente. Dividir la imagen 
 hay 1024 bloques: dar la imagen es equivalente a dar 256 n\'umeros por cada bloque. Una forma burda de comprimir la imagen es dar lo mismos 256 n\'umeros para todos 
 los bloques, comprimiendo la imagen (con p\'erdida obviamente) de 256 kbytes a 256 bytes. Una posibilidad es dar los valores correspondientes a un ``bloque promedio''.\\
 
-Nuestro c\'odigo de Octave (c\'odigo fuente \ref{compresionBruta1}) permite realizar dicha operaci\'on. \\
+Nuestro c\'odigo de Octave (c\'odigo fuente \ref{code:compresionBruta1}) permite realizar dicha operaci\'on. \\
 
 La funci\'on $imread$ lee im\'agenes en matrices. Al tratarse en este caso de una imagen de 512 x 512 en escala de grises, el resultado es una matriz de 512 filas y 
 512 columnas en el que cada elemento es un entero que puede ser de 8 o 16 bits. La funci\'on $im2col$ toma esa matriz y divide en bloques de alg\'un tamaño dado en 
@@ -177,21 +178,27 @@ de calidad de la imagen. La respuesta la da lo que se denomina \textit{Principal
 Introducimos el famoso concepto de la Estadística, la Covarianza. La covarianza nos da una idea de qu\'e tanto cambian juntas dos variables. Si tenemos, por ej., 
 dos variables aleatorias Y, Z la covarianza se define como,
 
-\[ cov(Y, Z) = E [(Y - E(Y )) (Z - E(Z))] \]
+\begin{equation}
+    cov(Y, Z) = E [(Y - E(Y )) (Z - E(Z))]
+\end{equation}
 
 donde $E(x)$ es la esperanza matem\'atica o valor esperado. \\
 
 En nuestro caso, por ej., podemos considerar a cada uno de los 256 n\'umeros que representan el nivel de gris de un pixel en un bloque como un variable aleatoria.
 Llamemos $X_{i}, i = 1, 2, \dotsc, 256$, a dichas variables aleatorias. Luego, podemos definir una matriz $C = (C_{ij} )$ de la siguiente manera,
 
-\[C_{ij} = Cov(X_{i}, X_{j})  \]
+\begin{equation}
+    C_{ij} = Cov(X_{i}, X_{j})
+\end{equation}
 
 A $\textbf{C}$ se la denomina matriz de covarianza.\\
 
 Sin embargo, nosotros no tenemos distribuciones de probabilidad que nos permitan calcular la matriz covarianza. S\'olo tenemos, en el ejemplo de la imagen
 de Lena, 1024 muestras de cada variable aleatoria: una por cada bloque. Esto nos permite calcular la matriz de covarianza muestral $\widehat{C} = (\widehat{C}_{ij})$:
 
-\[ \widehat{C}_{ij} =  \frac{1}{1024 - 1}\sum_{k=1}^{1024} (x_{ik} - \widehat{x}_{i}) (x_{jk} - \widehat{x}_{j}) \]
+\begin{equation}
+    \widehat{C}_{ij} =  \frac{1}{1024 - 1}\sum_{k=1}^{1024} (x_{ik} - \widehat{x}_{i}) (x_{jk} - \widehat{x}_{j})
+\end{equation}
 
 donde
 \begin{itemize}
@@ -216,7 +223,7 @@ a los dem\'as. \\
 Vamos a unir todo esto con la compresi\'on de la imagen.Los autovectores conforman la base de $\mathbb{R}^{256}$ de la que habl\'abamos m\'as arriba. 
 Los autovalores nos dicen c\'omo elegir un subconjunto de esos autovectores: elegimos aquellos que tienen el mayor autovalor. \\
 
-Nuestro c\'odigo de Octave (c\'odigo fuente \ref{compresionBruta2} muestra c\'omo realizar la compresi\'on usando estas ideas. \\
+Nuestro c\'odigo de Octave (c\'odigo fuente \ref{code:compresionBruta2}) muestra c\'omo realizar la compresi\'on usando estas ideas. \\
 
 El comienzo del programa es similar al m\'etodo de compresi\'on anterior. Seguimos exactamente los mismos pasos para obtener las matrices $b$, la matriz que tiene como 
 columnas los 1024 bloques de 256 elementos que representan la imagen, y $M$, la matriz que tiene como columnas 1024 copias del ``bloque promedio''.\\ 
@@ -313,6 +320,6 @@ m\'etodo obtenci\'on de autovalores y autovectores.\\
 \end{thebibliography}
 
 \section*{Código Fuente}
-    \lstinputlisting[caption=compresionBruta1.m,label=compresionBruta1,mathescape=false]{../src/compresionBruta1.m}
-    \lstinputlisting[caption=compresionBruta2.m,label=compresionBruta2,mathescape=false]{../src/compresionBruta2.m}
+    \lstinputlisting[caption=compresionBruta1.m,label=code:compresionBruta1,mathescape=false]{../src/compresionBruta1.m}
+    \lstinputlisting[caption=compresionBruta2.m,label=code:compresionBruta2,mathescape=false]{../src/compresionBruta2.m}
 \end{document}
