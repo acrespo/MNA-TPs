@@ -17,6 +17,16 @@ function res = compresionBruta2(path, out, N, eig_function)
     D = diag(D);
     V = V(:,i);
 
+	%calculo las primeras 5 "autoimagenes"
+	c = [];
+	dv = [];
+	for i = 1:5
+		c(:,i) = (V(:,i) - min(V(:,i))) * 256 / (max(V(:,i)) - min(V(:,i)));
+		autoimage = col2im(c(:,i), [16,16], [16,16], 'distinct');
+		autoimage= uint8(autoimage);
+		imwrite(autoimage, strcat('../out/autoimage',strcat(int2str(i), '.bmp')));
+	end
+
     % proyecto las primeras N autoimagenes
 
     pv = [];

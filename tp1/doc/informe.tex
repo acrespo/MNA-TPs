@@ -242,6 +242,15 @@ $col2im$ como se utilizó para la primera compresi\'on.
     \end{figure}
 }
 
+\newcommand{\autoimage}[2]{
+    \begin{figure}[H]
+        \includegraphics[width=\linewidth]{images/autoimage#1.png}
+        \caption{#2}
+        \label{fig:lena#1}
+    \end{figure}
+}
+
+
 \lena{512}{La imagen original de Lena}
 
 \subsection{Compresi\'on 1}
