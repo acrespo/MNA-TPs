@@ -262,9 +262,10 @@ $col2im$ como se utilizó para la primera compresi\'on.
 
 \lena{-qr-1}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con un solo autovector y nuestra implementaci\'on del m\'etodo QR}
 
-\subsection{Resultados del analisis \textit{Peak Signal to Noise Ratio}}
+\subsection{Resultados del análisis \textit{Peak Signal to Noise Ratio}}
 
 \begin{table}[H]
+    \center
     \begin{tabular}{l|c|c}
         Imagen & Error cuadratico medio & PSNR \\
         \hline
@@ -277,18 +278,17 @@ $col2im$ como se utilizó para la primera compresi\'on.
         Figura \ref{fig:lena-qr-1}  & 514  & 20.67 \\
 
     \end{tabular}
-    \caption{Resultados obtenidos de aplicar el algoritmo PSNR a las imagenes obtenidas}
+    \caption{Valores PSNR de las imágenes obtenidas}
     \label{tab:psnr}
 \end{table}
 
-En la tabla \ref{tab:psnr} se puede observar la calidad de los distintos metodos de compresion.
+En la tabla \ref{tab:psnr} se puede observar la calidad de los distintos metodos de compresión.
 El resulta para el primer algoritmo, que se puede describir como un algoritmo de reducción de la imágen, causó la mayor pérdida de información entre los métodos utilizados, con un error cuadrático medio de $2290$ y un PSNR de $14.185 dB$, lo cual no es aceptable.
 Es claro que la primer t\'ecnica de compresi\'on no es de gran utilidad. Se logra reducir enormemente la cantidad de datos, pero el resultado es algo
 totalmente diferente a nuestra imagen. Se descartan demasiados datos, haciendo imposible la reproducci\'on de la imagen original.
 
 La segunda t\'ecnica, en cambio, es mucho m\'as vers\'atil y completa, ya que permite modificar el ``grado'' de compresi\'on, modificando la cantidad de autovalores. 
-Esto impacta, como se ha visto, directamente en la calidad de la imagenes resultantes.
-Se puede observar en la tabla \ref{tab:psnr} como se incrementa el PNSR a medida que se incrementa la cantidad de autovectores utilizados, llegando al limite de los valores aceptados para transmision inalambrica con 4 autovectores.
+Esto impacta directamente en la calidad de la imagenes resultantes (incluídas en el anexo). Se puede observar en la tabla \ref{tab:psnr} cómo se incrementa el PNSR a medida que aumenta la cantidad de autovectores utilizados.
 
 \section*{Referencias}
 \begin{thebibliography}{99}
