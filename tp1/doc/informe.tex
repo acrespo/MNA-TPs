@@ -164,21 +164,27 @@ de calidad de la imagen. La respuesta la da lo que se denomina \textit{Principal
 Introducimos el famoso concepto de la Estadística, la Covarianza. La covarianza nos da una idea de qu\'e tanto cambian juntas dos variables. Si tenemos, por ej., 
 dos variables aleatorias Y, Z la covarianza se define como,
 
-\[ cov(Y, Z) = E [(Y - E(Y )) (Z - E(Z))] \]
+\begin{equation}
+    cov(Y, Z) = E [(Y - E(Y )) (Z - E(Z))]
+\end{equation}
 
 donde $E(x)$ es la esperanza matem\'atica o valor esperado. \\
 
 En nuestro caso, por ej., podemos considerar a cada uno de los 256 n\'umeros que representan el nivel de gris de un pixel en un bloque como un variable aleatoria.
 Llamemos $X_{i}, i = 1, 2, \dotsc, 256$, a dichas variables aleatorias. Luego, podemos definir una matriz $C = (C_{ij} )$ de la siguiente manera,
 
-\[C_{ij} = Cov(X_{i}, X_{j})  \]
+\begin{equation}
+    C_{ij} = Cov(X_{i}, X_{j})
+\end{equation}
 
 A $\textbf{C}$ se la denomina matriz de covarianza.\\
 
 Sin embargo, nosotros no tenemos distribuciones de probabilidad que nos permitan calcular la matriz covarianza. S\'olo tenemos, en el ejemplo de la imagen
 de Lena, 1024 muestras de cada variable aleatoria: una por cada bloque. Esto nos permite calcular la matriz de covarianza muestral $\widehat{C} = (\widehat{C}_{ij})$:
 
-\[ \widehat{C}_{ij} =  \frac{1}{1024 - 1}\sum_{k=1}^{1024} (x_{ik} - \widehat{x}_{i}) (x_{jk} - \widehat{x}_{j}) \]
+\begin{equation}
+    \widehat{C}_{ij} =  \frac{1}{1024 - 1}\sum_{k=1}^{1024} (x_{ik} - \widehat{x}_{i}) (x_{jk} - \widehat{x}_{j})
+\end{equation}
 
 donde
 \begin{itemize}
