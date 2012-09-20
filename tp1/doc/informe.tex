@@ -119,6 +119,7 @@ paper, paper, paper
 % Pueden ser varias secciones
 
 \subsection{Compresi\'on bruta 1: la imagen media}
+\label{sec:compresion1}
 
 Una forma muy simple de comprimir una imagen es la siguiente. Dividir la imagen en bloques no solapados de, por ej., 16 x 16. En la imagen de Lena (de 512 x 512) 
 hay 1024 bloques: dar la imagen es equivalente a dar 256 n\'umeros por cada bloque. Una forma burda de comprimir la imagen es dar lo mismos 256 n\'umeros para todos 
@@ -147,6 +148,7 @@ Luego, podemos aplicar $col2im$ a la matriz $M$ que devuelta por la funci\'on $r
 de dicha matriz y convertirlos a enteros de 8 bits (para que queden en el rango 0 - 255). Para ello, basta aplicar la funci\'on $uint8$ a la matriz $d$.
 
 \subsection{Compresi\'on bruta 2: PCA}
+\label{sec:compresion2}
 
 Desde el punto de vista del  \'algebra lineal, la imagen dividida en bloques de 16 x 16, como en el caso anterior, se puede considerar simplemente como
 1024 vectores de 256 elementos cada uno (la matriz b del código). Es decir, tenemos vectores en $\mathbb{R}^{256}$ . Dada una base cualquiera de $\mathbb{R}^{256}$,
@@ -226,9 +228,32 @@ Finalmente, s\'olo queda volver a juntar las columnas de la matriz $d$ en bloque
 $col2im$ como lo hicimos anteriormente para la primera compresi\'on. Al igual que antes, se redondean y convierten a enteros de 8 bits los elementos de la matriz
 resultante, usando $uit8$.\\
 
-
+\newpage
 \section{Resultados}
 % Podria ser Resultados y Conclusiones
+
+\newcommand{\lena}[2]{
+    \begin{figure}
+        \label{lena#1}
+        \includegraphics[width=\linewidth]{images/lena#1.png}
+        \caption{#2}
+    \end{figure}
+}
+
+\lena{512}{La imagen original de Lena}
+
+\lena{-bruta}{El resultado de aplicar la primer compresion (\ref{sec:compresion1})}
+
+\lena{-eig-1}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 1 autovector}
+\lena{-eig-2}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 2 autovectores}
+\lena{-eig-3}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 3 autovectores}
+\lena{-eig-4}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 4 autovectores}
+\lena{-eig-16}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 16 autovectores}
+\lena{-eig-32}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 32 autovectores}
+\lena{-eig-128}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con 128 autovectores}
+
+\lena{-qr-1}{El resultado de aplicar la segunda compresion (\ref{sec:compresion2}) con un solo autovector y nuestra implementacion del metodo QR}
+
 
 \section{Conclusiones}
 % Podria ser Resultados y Conclusiones
