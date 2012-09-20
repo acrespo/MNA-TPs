@@ -128,9 +128,20 @@ Finalmente, la seccion \ref{sec:resultados} se muestran los resultados de los me
 \section{Tecnica de analisis}
 \label{sec:tecnica}
 
-Se utiliz\'o la imagen estandar en el campo de tratamiento de im\'agenes, referida como ``la imagen de Lena'' \cite{lena} \cite{lenaweb}. Con el objeto de evidenciar la pérdida de información se realizó una comparación entre la imagen original y las comprimidas mediante dos índices comunes en el campo, el error cuadrático medio\footnote{El error cuadrático medio es el promedio de los cuadrados de las diferencias entre los valores de los pixels de las dos imágenes} y el PSNR\footnote{\textit{Peak Signal to Noise Ratio}, \cite{PSNR}}. Se puede encontrar la implementacion utilizada en anexada \ref{code:distancia}.
+Se utiliz\'o la imagen estandar en el campo de tratamiento de im\'agenes, referida como ``la imagen de Lena'' \cite{lena} \cite{lenaweb}.
+Con el objeto de evidenciar la pérdida de información se realizó una comparación entre la imagen original y las comprimidas mediante dos índices comunes en el campo, el error cuadrático medio\footnote{El error cuadrático medio es el promedio de los cuadrados de las diferencias entre los valores de los pixels de las dos imágenes} y el PSNR\footnote{\textit{Peak Signal to Noise Ratio}, \cite{PSNR}}.  
+Se puede encontrar la implementacion utilizada anexada (\ref{code:distancia}).
 
-valores aceptables para transmisión inalámbrica son en el rango de 20 a 25, para fotografías un valor aceptable debe ser mayor a 35, cuanto más alto el valor, mayor es la similitud entre dos imágenes
+Dado que no se hace uso del error cuadratico medio como herramienta directa de analisis, no se va a entrar en detalle sobre el significado del mismo.
+
+El calculo de \textit{Peak Signal to Noise Ratio} es utilizado para analizar la calidad de un metodo de compresion.
+Para esto, trata la imagen como una señal, y calcula la proporcion entre el valor maximo de la señal y la corrupcion de la imagen.
+El resultado se expresa en una escala logaritmica, y se dice que una compresion es de mejor calidad cuanto mas grande el resultado.
+Se debe notar que si la compresion no produce error, el PSNR no esta definido.
+
+Valores aceptables para transmisión inalámbrica son en el rango de 20 a 25 \cite{Wikipedia_PSNR}.
+Para compresion de imagenes y video se suele considerar un valor entre 30 y 50.
+
 % Explicar el algoritmo
 
 \section{Compresi\'on 1: la imagen media}
@@ -269,6 +280,7 @@ Se puede observar en la tabla \ref{tab:psnr} como se incrementa el PNSR a medida
     \bibitem{Wikipedia_Image_compression} \url{http://en.wikipedia.org/wiki/Image\_compression}
     \bibitem{Wikipedia_Compression_artifact} \url{http://en.wikipedia.org/wiki/Compression\_artifact}
     \bibitem{PSNR} Peak Signal-to-Noise Ratio as an Image Quality Metric, \textit{National Instruments}, \url{http://www.ni.com/white-paper/13306/en}
+    \bibitem{Wikipedia_PSNR} \url{http://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio}
 
 \end{thebibliography}
 
