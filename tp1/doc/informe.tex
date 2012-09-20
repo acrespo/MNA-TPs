@@ -275,40 +275,7 @@ la funci\'on $col2im$ como se utilizó para la primera compresi\'on.
 \label{sec:resultados}
 % Podria ser Resultados y Conclusiones
 
-\newcommand{\lena}[2]{
-    \begin{figure}[H]
-        \includegraphics[width=\linewidth]{images/lena#1.png}
-        \caption{#2}
-        \label{fig:lena#1}
-    \end{figure}
-}
-
-\newcommand{\autoimage}[2]{
-    \begin{figure}[H]
-        \includegraphics[width=\linewidth]{images/autoimage#1.png}
-        \caption{#2}
-        \label{fig:lena#1}
-    \end{figure}
-}
-
-
-\lena{512}{La imagen original de Lena}
-
-\subsection{Compresi\'on 1}
-
-\lena{-bruta}{El resultado de aplicar la primer compresi\'on (Seccion \ref{sec:compresion1})}
-
-\subsection{Compresi\'on 2}
-
-\lena{-eig-1}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 1 autovector}
-\lena{-eig-2}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 2 autovectores}
-\lena{-eig-3}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 3 autovectores}
-\lena{-eig-4}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 4 autovectores}
-\lena{-eig-5}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 5 autovectores}
-
-\subsection{Compresi\'on 2 con m\'etodo QR}
-
-\lena{-qr-1}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con un solo autovector y nuestra implementaci\'on del m\'etodo QR}
+Las imágenes resultantes de aplicar los métodos descriptos se encuentran en el Anexo 2.
 
 \subsection{Resultados del análisis \textit{Peak Signal to Noise Ratio}}
 
@@ -356,8 +323,52 @@ se incrementa el PNSR a medida que aumenta la cantidad de autovectores utilizado
 \end{thebibliography}
 
 \newpage
-\section*{Anexo: Código Fuente}
+\section*{Anexo 1: Código Fuente}
     \lstinputlisting[caption=compresionBruta1.m,label=code:compresionBruta1,mathescape=false]{../src/compresionBruta1.m}
     \lstinputlisting[caption=compresionBruta2.m,label=code:compresionBruta2,mathescape=false]{../src/compresionBruta2.m}
     \lstinputlisting[caption=distancia.m,label=code:distancia,mathescape=false]{../src/distance.m}
+
+\newpage
+\section*{Anexo 2: Imagenes}
+
+\newcommand{\lena}[2]{
+    \begin{figure}[H]
+        \includegraphics[width=\linewidth]{images/lena#1.png}
+        \caption{#2}
+        \label{fig:lena#1}
+    \end{figure}
+}
+
+\newcommand{\autoimage}[2]{
+    \begin{figure}[H]
+        \includegraphics[width=\linewidth]{images/autoimage#1.png}
+        \caption{#2}
+        \label{fig:lena#1}
+    \end{figure}
+}
+
+\lena{512}{La imagen original de Lena}
+
+\subsection{Compresi\'on 1}
+
+\lena{-bruta}{El resultado de aplicar la primer compresi\'on (Seccion \ref{sec:compresion1})}
+
+\subsection{Compresi\'on 2}
+
+\lena{-eig-1}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 1 autovector}
+\lena{-eig-2}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 2 autovectores}
+\lena{-eig-3}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 3 autovectores}
+\lena{-eig-4}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 4 autovectores}
+\lena{-eig-5}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con 5 autovectores}
+
+\autoimage{1}{La autoimagen correspondiente al primer autovector}
+\autoimage{2}{La autoimagen correspondiente al segundo autovector}
+\autoimage{3}{La autoimagen correspondiente al tercer autovector}
+\autoimage{4}{La autoimagen correspondiente al cuarto autovector}
+\autoimage{5}{La autoimagen correspondiente al quinto autovector}
+
+\subsection{Compresi\'on 2 con m\'etodo QR}
+
+\lena{-qr-1}{El resultado de aplicar la segunda compresi\'on (Seccion \ref{sec:compresion2}) con un solo autovector y nuestra implementaci\'on del m\'etodo QR}
+
 \end{document}
