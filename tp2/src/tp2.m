@@ -36,12 +36,12 @@ function tp2()
     gaussFilteredImg = normalization(real(ifft2(gaussFilter(X))), 0, 255);
     image(gaussFilteredImg');
     title('Imagen tras aplicacion del filtro gaussiano');
-    print('-dpng', '../images/gaussFilterNorm.png');
+    print('-dpng', '../images/gaussFilter.png');
 
     %apply damero filter
     dameroFilteredImg = normalization(real(ifft2(dameroFilter(X))), 0, 255);
     image(dameroFilteredImg');
     title('Imagen tras aplicacion del filtro damero');
-    print('-dpng', '../images/dameroFilterNorm.png');
+    print('-dpng', '../images/dameroFilter.png');
 
 end
