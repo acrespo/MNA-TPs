@@ -1,5 +1,4 @@
 function res = dft(x)
-
 %   x must be square
     res = zeros(size(x));
     N = rows(x);
@@ -11,7 +10,6 @@ function res = dft(x)
 end
 
 function res = _dft(x, l, k)
-
 %   X must be square
     res = 0;
     N = rows(x);

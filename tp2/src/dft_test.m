@@ -10,5 +10,4 @@ function res = dft_test()
             disp(a);
         end
     end
-
 end
