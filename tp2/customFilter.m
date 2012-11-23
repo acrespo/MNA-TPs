@@ -9,7 +9,7 @@ function res = customFilter(X)
     end
     for i = 190:210
         for j = 1:400
-            filter(i, j) ) = 0;
+            filter(i, j) = 0;
         end
     end
 
