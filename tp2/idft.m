@@ -1,23 +1,23 @@
 function res = idft(X)
 
 %   x must be square
-    res = zeros(size(X));
+    res = zeros(rows(X));
     N = rows(X);
-    for n = 1: N - 1
-        for m = 1: N - 1
+    for n = 1:N
+        for m = 1:N
             res(n,m) = _idft(X, n, m) /(N**2);
         end
     end
 end
 
-function res = _idft(X, i, j)
+function res = _idft(X, n, m)
 
 %   X must be square
-    res = zeros(size(X);
+    res = 0;
     N = rows(X);
-    for l = 0: N - 1
-        for k = 0: N - 1
-            res += X(l, k) * e^(i*2*pi*(i*l + j*m)/N);
+    for l = 1:N
+        for k = 1:N
+            res += X(l, k) * e^(i*2*pi*((n - 1)*(l - 1) + (m - 1)*(k - 1))/N);
         end
     end
 end
