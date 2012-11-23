@@ -9,7 +9,6 @@ function tp2()
     X = fft2(x);
 
     %print amplitude image
-    %amp = normalization(abs(X), 0, 255);
     amp = abs(X);
     image(amp');
     title('Imagen de la amplitud');
@@ -22,25 +21,27 @@ function tp2()
     print('-dpng', './images/phase.png');
 
     %rebuild original image
-    %rebuild = abs(ifft2(X));
     rebuild = real(ifft2(X));
     image(rebuild');
     title('Imagen reconstruida con la Transformada Inversa Discreta');
     print('-dpng', './images/rebuild.png');
 
     %apply custom filter
-    customFilteredImg = customFilter(X);
+    customFilteredImg = normalization(real(ifft2(customFilter(X))), 0, 255);
     image(customFilteredImg');
-    title('Imagen tras aplicación del filtro custom');
+    title('Imagen tras aplicacion del filtro custom');
+    print('-dpng', './images/customFilter.png');
 
     %apply gauss filter
-    gaussFilteredImg = gaussFilter(X);
+    gaussFilteredImg = normalization(real(ifft2(gaussFilter(X))), 0, 255);
     image(gaussFilteredImg');
-    title('Imagen tras aplicación del filtro gaussiano');
+    title('Imagen tras aplicacion del filtro gaussiano');
+    print('-dpng', './images/gaussFilterNorm.png');
 
     %apply damero filter
-    dameroFilteredImg = dameroFilter(X);
+    dameroFilteredImg = normalization(real(ifft2(dameroFilter(X))), 0, 255);
     image(dameroFilteredImg');
-    title('Imagen tras aplicación del filtro damero');
+    title('Imagen tras aplicacion del filtro damero');
+    print('-dpng', './images/dameroFilterNorm.png');
 
 end
