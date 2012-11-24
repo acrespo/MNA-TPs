@@ -110,14 +110,14 @@ la aplicaci\'on de filtros en el dominio de frecuencias, también conocidos como
 \end{customabstract}
 
 \begin{keywords}
-Transformada Discreta de Fourier en 2 dimensiones, Filtros espaciales, Fast Fourier Transform, an\'alisis espectral
+Transformada Discreta de Fourier en 2 dimensiones, Filtros espaciales, Fast Fourier Transform, an\'alisis espectral, dominio espacial, dominio de frecuencias
 \end{keywords}
 
 \section{Introducci\'on}
 
-La Transformada de Fourier es una herramiento muy importante para el procesamiento de im\'agenes, la cual se usa para descomponer una imagen en sus 
+La Transformada de Fourier es una herramienta muy importante para el procesamiento de im\'agenes, la cual se usa para descomponer una imagen en sus 
 componenetes de senos y cosenos. La salidad de la transformaci\'on representa la imagen en el dominio de frecuencia o dominio de Fourier, mientras 
-que el entrada es el dominio espacial equivalente. En la imagen del dominio de frecuencias, cada punto representa una frecuencia particular contenida en el 
+que la entrada es el dominio espacial equivalente. En la imagen del dominio de frecuencias, cada punto representa una frecuencia particular contenida en el 
 dominio espacial de la imagen. \\
 
 La Transformada de Fourier se utiliza para una gran variedad de aplicaciones, como ser an\'alisis, filtrado, compresi\'on y reconstrucci\'on de im\'agenes. \\
@@ -128,7 +128,7 @@ color blanco). En el presente trabajo, se utilizará esta concepci\'on para la a
 Transformada Discreta de Fourier en 2 dimensiones. \\
 
 La Transformada Discreta de Fourier en 2 dimensiones, así como la Transformada Inversa Discreta, se encuentran definidas en la secci\'on 
-\ref{sec:defDFT}\\
+\ref{sec:defDFT}.\\
 En la secci\'on \ref{sec:metodologia} se explica la metodolog\'ia usada para la obtenci\'on de las im\'agenes correspondientes a la amplitud 
 y a la fase, y para aplicaci\'on de los filtros. \\
 En la secci\'on \ref{sec:resultados} se muestran los resultados obtenidos, junto con el an\'alisis de cada uno. \\
@@ -141,7 +141,7 @@ Todos los resultados se obtienen a partir de la Figura \ref{fig:saturno}, la cua
 
 \section{Transformada Discreta de Fourier en 2 dimensiones}
 \label{sec:defDFT}
-La Trasnformada Discreta de Fourier de una secuencia bidimensional $x_{n,m}$ de $N \times N$ (en nuestro caso, la imagen) 
+La Transformada Discreta de Fourier de una secuencia bidimensional $x_{n,m}$ de $N \times N$ (en nuestro caso, la imagen) 
 se define como \cite{Guia2-MNA} \cite{NumericalRecipes}:
 
 \begin{equation}
@@ -154,14 +154,14 @@ siendo la Transformada Inversa Discreta
     x_{n,m} = \frac{1}{N^2} \sum_{l=0}^{N - 1} \sum_{k=0}^{N - 1} X_{l,k} e^{i*\frac{2*\pi}{N}*(nl + mk)}
 \end{equation}
 
-Anexadas al presente trabajo se encuentra nuestra implementaci\'on, tanto de la Trasnformada Discreta (Anexo: C\'odigo Fuente \ref{code:dft}) como de
+Anexadas al presente trabajo se encuentran nuestras implementaciones, tanto de la Transformada Discreta (Anexo: C\'odigo Fuente \ref{code:dft}) como de
  la Transformada Inversa Discreta (Anexo: C\'odigo Fuente \ref{code:idft}) . 
 Sin embargo, es f\'acil ver que estas 
 implementaciones son de orden $O(n^2)$ para calcular cada elemento de la matriz, por lo que aplicar nuestra implementaci\'on de la 
-transformada (o de la transformada inversa) ser\'ia orden $O(n^4)$. Teniendo esto en cuenta, y agregando el hecho de que nuestra imagen es de 400 $x$ 400 
+transformada (o de la transformada inversa) a una matriz ser\'ia orden $O(n^4)$. Teniendo esto en cuenta, y agregando el hecho de que nuestra imagen es de 400 $x$ 400 
 pixeles, se hace necesario recurrir a una implementaci\'on m\'as eficiente. Es por esto que para la obtenci\'on de los resultados y su posterior an\'alisis 
 se utilizan las funciones \textit{built-in} de \textit{Octave}, \textit{fft2} y \textit{ifft2}, que implementan algoritmos del estilo FFT 
-(\textit{Fast Fourier Transform}).\\
+(\textit{Fast Fourier Transform}) \cite{Wikipedia_FFT}.\\
 
 Se encuentra anexado también para el lector el c\'odigo fuente de un sencillo programa de prueba que compara, para una matriz de un tamaño pequeño, 
 los resultados obtenidos a  partir de nuestras implementaciones contra los de las funciones de \textit{Octave}
@@ -174,14 +174,13 @@ los resultados obtenidos a  partir de nuestras implementaciones contra los de la
 
 Para hallar la imagen en amplitud, se procede aplicando la Transformada Discreta de Fourier en 2 dimensiones a nuestra imagen y qued\'andonos con el 
 m\'odulo. Cabe destacar que la Transformada Discreta devuelve n\'umeros complejos. El centro de la imagen de amplitud, representa las frecuencias bajas, 
-mientras que las partes más cercanas a los bordes representan las frecuencias m\'as altas \cite{HIPR2-FourierTransform}. Considerando esto, podemos decir que nuestra imagen est\'a compuesta
-mayormente por frecuencias bajas, dada la mayor concentraci\'on de puntos en el centro de la imagen que en los bordes.\\
+mientras que las partes más cercanas a los bordes representan las frecuencias m\'as altas \cite{HIPR2-FourierTransform}.\\
 
 Para hallar la imagen en fase, el proceso es el mismo, excepto que en lugar de quedarnos con el m\'odulo de los n\'umeros complejos, nos quedamos con el 
 \'angulo o argumento. Tambi\'en se agrega una normalizaci\'on, para mapear los valores de fase al intervalo entero $[0, 255]$, 
 requerido para representar la escala de grises.\\
 
-Finalmente, se aplica la Transformada Inversa Discreta a la imagen transformada para reconstrui la imagen original.\\
+Finalmente, se aplica la Transformada Inversa Discreta a la imagen transformada para reconstruir la imagen original.\\
 
 \subsection{Aplicaci\'on de filtros}
 \label{sec:aplicacionFiltros}
@@ -237,7 +236,11 @@ Como bien dice la secci\'on \ref{sec:metodologia}
 tras la aplicaci\'on de la Transformada Discreta de Fourier y filtrando por el m\'odulo y la fase se obtienen las im\'agenes correspondientes a la amplitud
 (Figura \ref{fig:amplitude}) y a la fase (Figura \ref{fig:phase}) respectivamente. \\
 
-Luego, aplicando la Trasnformada Inversa Discreta a la imagen transformada, se recupera la imagen original (Figura \ref{fig:rebuild}).
+ Considerando lo dicho en la secci\'on \ref{sec:metodologia}, podemos decir que 
+nuestra imagen est\'a compuesta
+mayormente por frecuencias bajas, dada la mayor concentraci\'on de puntos en el centro de la imagen que en los bordes.\\
+
+Luego, aplicando la Transformada Inversa Discreta a la imagen transformada, se recupera la imagen original (Figura \ref{fig:rebuild}).
 
 \subsection{Aplicaci\'on de filtros}
 
@@ -246,28 +249,30 @@ se obtienen las imagenes luego de la aplicaci\'on de cada filtro. \\
 
 \subsubsection{Filtro Custom}
 
-La imagen en frecuencias luego de de aplicar el fitro Custom se observa en la Figura \ref{fig:customFilterFrequency}. Se puede apreciar 
+La imagen en frecuencias luego de aplicar el fitro custom se observa en la Figura \ref{fig:customFilterFrequency}. Se puede apreciar 
 las franjas que el filtro ha ``tapado'' o ``matado''. \\
+
 La imagen resultante luego anti-transformar la imagen anterior puede observarse en la Figura \ref{fig:customFilter}. No es t\'an sencillo pero 
 se puede percibir cierto ruido alrededor de los bordes de la imagen. Esto puede atribuirse a la p\'erdida de informaci\'on generada por la aplicaci\'on
 del filtro.
 
 \subsubsection{Filtro Gaussiano}
-La imagen en frecuencias luego de de aplicar el fitro Custom se observa en la Figura \ref{fig:gaussFilterFrequency}. Se puede ver que el filtro solo mantiene
-las frecuencias pequeñas, eliminando todo el resto del espectro de frecuencias. Esto es lo que hacen, por definici\'on \cite{Wikipedia_FiltroPasabajo},
-los filtros \textit{pasabajos}. \\
+La imagen en frecuencias luego de aplicar el fitro gaussiano se observa en la Figura \ref{fig:gaussFilterFrequency}. Se puede ver que el filtro s\'olo mantiene
+las frecuencias pequeñas, eliminando todo el resto del espectro de frecuencias. Esto es lo que hacen, por definici\'on,
+los filtros \textit{pasabajos} \cite{Wikipedia_FiltroPasabajo}. \\
+
 La imagen resultante luego anti-transformar la imagen anterior puede observarse en la Figura \ref{fig:gaussFilter}. Al igual que cualquier filtro pasabajos
-el filtro gaussiano ate\'ia los grandes cambios, por lo que se pierde la noci\'on de los bordes de la figura y se obtiene una imagen un tanto ``borrosa''.
+el filtro gaussiano aten\'ua los grandes cambios, por lo que se pierde la noci\'on de los bordes de la figura y se obtiene una imagen ``borrosa''.
 
 
 \subsubsection{Filtro Damero}
 
-La imagen en frecuencias luego de de aplicar el fitro Custom se observa en la Figura \ref{fig:dameroFilterFrequency}. No es apreciable pero el efecto de este 
+La imagen en frecuencias luego de aplicar el fitro damero se observa en la Figura \ref{fig:dameroFilterFrequency}. No es apreciable pero el efecto de este 
 filtro es el de filtrar por diagonales. Es decir, se filtra una diagonal, y las diagonales adyacentes no. Si se piensa en t\'erminos de blanco (no se filtra) y 
 negro (si se filtra), el efecto de este filtro puede ser asociado al de un tablero de damas o ajedrez.\\
 
 La imagen resultante luego anti-transformar la imagen anterior puede observarse en la Figura \ref{fig:dameroFilter}. El efecto generado por la aplicaci\'on del 
-filtro resulta f\'acilmente apreciable y a la vez muy interesante. Puede observarse como en una misma imagen, conviven una imagen, a la cual llamaremos ``blanca''
+filtro resulta f\'acilmente apreciable y a la vez muy interesante. Puede observarse como, en una misma imagen, conviven una imagen, a la cual llamaremos ``blanca''
 por la predominancia de este color, y su opuesta, la imagen ``negra''. 
 N\'otese como los cuadrantes estan claramente definidos, y además los cuadrantes de las dos im\'agenes est\'an invertidos. Esto es, el 
 segundo cuadrante (superior izquierdo) de la imagen ``blanca'' convive con el tercer cuadrante (inferior derecho) de la imagen ``negra'' y viceversa. 
@@ -283,8 +288,9 @@ Como bien dijimos en secciones previas, nuestra imagen está conformada mayormen
 (Figura \ref{fig:amplitude}). Otra cosa interesante que podría haberse observado es que si se introduce ruido a la imagen esto se traducir\'ia en mayor 
 diferencia entre los picos\cite{HIPR2-FourierTransform}. \\
 
-Otra cosa interesante sobre la separaci\'on entre la imagen de la amplitud y la fase, es que se puede ver que si se anti-transforma solamente la imagen de la 
-amplitud, la imagen obtenida es totalmente irreconocible (Figura \ref{fig:amplitudeRebuilt}). Esta marca una gran (casi absoluta) p\'erdida de informaci\'on y lo que nos indica que la informaci\'on
+Otra hecho interesante sobre la separaci\'on entre la imagen de la amplitud y la fase, es que se puede ver que si se anti-transforma solamente la imagen de la 
+amplitud, la imagen obtenida es totalmente irreconocible (Figura \ref{fig:amplitudeRebuilt}). Esto marca una gran p\'erdida de informaci\'on (casi absoluta) 
+y lo que nos indica que la informaci\'on
 de la fase es vital para la reconstrucci\'on de la imagen original.\\
 
 De la utilizaci\'on de nuestras implementaciones de la TDF en 2 dimensiones, como tambi\'en de un simple an\'alisis de complejidad, se deduce que los enfoques 
@@ -294,7 +300,7 @@ logran reducir dr\'asticamente el tiempo de ejecuci\'on del c\'alculo de una tra
 Gilbert Strang en 1994, quien describi\'o el algoritmo como ``el algorimo num\'erico m\'as importante de nuestra era'' \cite{Wikipedia_FFT_quote} 
 \cite{Strang-quote}. Un interesante objeto de estudio ser\'ia el de implementar este algoritmo y compararlo con nuestras implementaciones de ``fuerza bruta''.
 El algoritmo responde al cl\'asico esquema \textit{Divide and Conquer} pero asume un tamaño de la entrada de potencias de 2. Una posible idea para eliminar esta
-restricci\'on podr\'ia ser completar (``padding'') con ceros, y luego quedarse con la matriz (imagen) del tamaño de la matriz original. Una vez implementada
+restricci\'on podr\'ia ser completar con ceros (``padding''), y luego quedarse con la matriz (imagen) del tamaño de la matriz original. Una vez implementada
 la FFT undimensional, la FFT para 2 dimensiones resulta tan trivial como aplicar la FFT undimensional secuencialmente en cada \'indice de la funci\'on original,
 esto es, primero en las columnas y luego en las filas, o al rev\'es\cite{NumericalRecipes}.
 
@@ -318,6 +324,8 @@ esto es, primero en las columnas y luego en las filas, o al rev\'es\cite{Numeric
     \bibitem{Wikipedia_FFT_quote} \url{http://en.wikipedia.org/wiki/Fast_Fourier_transform#cite_note-1}
     \bibitem{HIPR2-FourierTransform} \url{http://homepages.inf.ed.ac.uk/rbf/HIPR2/fourier.htm}
     \bibitem{Strang-quote} Strang, G., Nguyen, T. Wavelets and Filter Banks. 1994.
+    \bibitem{Wikipedia_FFT} \url{http://en.wikipedia.org/wiki/Fast_Fourier_transform}
+
     
 \end{thebibliography}
 
@@ -345,7 +353,8 @@ esto es, primero en las columnas y luego en las filas, o al rev\'es\cite{Numeric
 
 \begin{figure}[H]
         \includegraphics[width=\linewidth]{../images/amplitude.png}
-        \caption{La imagen correspondiente a la amplitud.}
+        \caption{La imagen correspondiente a la amplitud. Puede verse como hay una mayor concentraci\'on de puntos alrededor del centro de la imagen, que 
+        en las cercan\'ias de los bordes, lo cual indica una mayor cantidad de frecuencias bajas.}
         \label{fig:amplitude}
 \end{figure}
 
