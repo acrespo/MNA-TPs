@@ -12,7 +12,6 @@ function tp3(dim, iterations)
 	h = 0.01;
 
 	colormap(gray(255));
-
 	image(u0);
 	print('-dpng', strcat('../images/iteration-1.png'));
 
@@ -21,10 +20,8 @@ function tp3(dim, iterations)
 	for t = 2:iterations
 		
 		uN = processIteration(t, v0, f0, k, h, deltaT, uPrev);
-
 		image(uN);
 		print('-dpng', strcat('../images/iteration-', num2str(t), '.png'));
-
 		uPrev = uN;
 	end
 end
@@ -32,7 +29,6 @@ end
 function ret = windSpeed(t, v0, f0)
     ret = [ v0 * cos( 2*pi*f0*t ), v0 * sin( 2*pi*f0*t ) ];
 end
-
 
 function ret = processIteration(t, v0, f0, k, h, deltaT, uPrev)
 
