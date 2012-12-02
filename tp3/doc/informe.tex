@@ -118,7 +118,7 @@ radionucleidos, nube radiactiva,  ecuaci\'on difusi\'on-advecci\'on, discretizac
 
 Cuando ocurre un accidente nuclear, los radionucleidos liberados a la atm\'osfera son afectados por 2 procesos: la difusi\'on de los radionucleidos en el aire, y
 la advecci\'on por el movimiento la masa de aire debido al viento. Para modelar el proceso de contaminaci\'on atmosf\'erica puede considerarse que la concentraci\'on de
-contaminante $u(x,y,z,t)$ satisface la \textit{ecuaci\'on difusi\'on-advecci\'on}
+contaminante $u(x,y,z,t)$ satisface la \textit{ecuaci\'on difusi\'on-advecci\'on} \cite{Guia2-MNA} \cite{Convection-diffussion equation}
 
 \begin{equation}
 \label{ec:difusion-adveccion}
@@ -133,6 +133,9 @@ En la secci\'on \ref{sec:metodologia} proponemos y explicamos la discretizaci\'o
 centrado.\\
 En la secci\'on \ref{sec:resultados} se muestran los resultados obtenidos, junto con el an\'alisis de cada uno. \\
 Finalmente, en la secci\'on \ref{sec:conclusiones} se interpretan los resultados obtenidos y se detallan las conclusiones m\'as importantes. \\
+
+Al final de este documento, se encuentra el Anexo, el cual contiene el c\'odigo fuente del programa utilizado para construir todas las im\'agenes de la simulaci\'on, 
+m\'as el comando para convertirlas en un video (Anexo 1) y  algunas im\'agenes de la simulaci\'on y referenciadas a lo largo del presente trabajo (Anexo 2).\\
 
 \section{Metodolog\'ia}
 \label{sec:metodologia}
@@ -150,7 +153,7 @@ Para nuestro caso de estudio, tomaremos $k = 0,025$ y $v$, la velocidad del vien
 \end{equation}
 
 donde $v_{0} = 2$ y $f_{0} = \frac{1}{3600}$. La fuente puede considerarse casi toda concentrada en una regi\'on muy pequeña, es decir casi una 
-delta de Dirac \cite{Guia2-MNA}. Este sería el ``hipocentro'' o \textit{ground-zero} \cite{groun-zero} del desastre. \\
+delta de Dirac \cite{Guia2-MNA}. Este sería el ``hipocentro'' o \textit{Ground-zero} \cite{Ground-zero} del desastre. \\
 
 Para la discretizaci\'on del problema, aplicamos un esquema expl\'icito centrado a la ecuaci\'on \ref{ec:difusion-adveccion-2D}, resultando en 
 
@@ -171,7 +174,9 @@ de forma iterativa $u(x,y,t)$ dado el estado inicial $u_{0}$.
 \begin{equation}
 \label{ec:discretizacion-despejada}
 \begin{array}{c}
-u_{i,j}^{n+1} = 2\Delta t \left[ k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + u_{i-1,j}^{n}}{\Delta x^2} - \dfrac{u_{i,j+1}^{n} - 2u_{i,j}^{n} + u_{i,j-1}^{n}}{\Delta y^2}  \right) \right.\\
+u_{i,j}^{n+1} = 2\Delta t \left[ k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + u_{i-1,j}^{n}}{\Delta x^2} \right.\right.\\
+    \\
+    \left. - \dfrac{u_{i,j+1}^{n} - 2u_{i,j}^{n} + u_{i,j-1}^{n}}{\Delta y^2}  \right) \\
      \\
  \left. - v_{x}\dfrac{u_{i+1,j}^{n} - u_{i-1,j}^{n}}{2\Delta x} -  v_{y}\dfrac{u_{i,j+1}^{n} - u_{i,j-1}^{n}}{2\Delta y} \right] + u_{i,j}^{n} \\
     \\
@@ -181,7 +186,8 @@ u_{i,j}^{n+1} = 2\Delta t \left[ k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + 
 \section{Resultados}
 \label{sec:resultados}
 
-Los par\'ametros elegidos fueron:
+Variando los par\'ametros, buscamos experimentalmente aquellos para los cuales el algoritmo fuera estable \cite{Numerical-stability}. Luego de varias pruebas, 
+escogimos los siguientes valores:
 
 \begin{equation}
     \nonumber
@@ -191,6 +197,10 @@ Los par\'ametros elegidos fueron:
         \Delta t & = & 0,0001 \\
     \end{array}
 \end{equation}
+
+Para repetir los resultados de esta secci\'on se debe correr la el programa \textit{tp3} que figura en el Anexo: C\'odigo Fuente \ref{code:tp3} con los 
+siguientes par\'ametros: 50, 10000, 1000, 0.01, 0.0001. Otros resultados interesantes que observamos fueron al variar, la intensidad inicial a 100000, o, en otro caso,
+ los desplazamiento espacial a 0.1 y el temporal a 0.1. Esta última ejecuci\'on es un claro ejemplo de cuando el algoritmo se comporta de manera inestable.\\
 
 Para simular el estado inicial en el que la fuente est\'a toda concentrada en un solo punto, asignamos a la configuraci\'on inicial $u_{0}$ una matriz 
 cuadrada de ceros de una cierta dimensi\'on (en nuestro caso 50), con la particularidad de que en el centro introducimos un valor de 10000, que simular\'ia
@@ -231,14 +241,17 @@ Por otro lado, el desplazamiento reci\'en se aprecia en el largo plazo.
 
     \bibitem{Guia2-MNA} Fierens, Pablo I. Gu\'ia 2 de M\'etodos Num\'ericos Avanzados, Instituto Tecnol\'ogico de Buenos Aires, 2012.
     \bibitem{Chernobyl} \url{http://en.wikipedia.org/wiki/Chernobyl_disaster}
-    \bibitem{groun-zero} \url{http://en.wikipedia.org/wiki/Ground_zero}
-    
+    \bibitem{Ground-zero} \url{http://en.wikipedia.org/wiki/Ground_zero}
+    \bibitem{Convection-diffussion equation} \url{http://en.wikipedia.org/wiki/Convection%E2%80%93diffusion_equation}
+    \bibitem{Numerical-stability} \url{http://en.wikipedia.org/wiki/Numerical_stability}
+
 \end{thebibliography}
 
 \clearpage
 \section*{Anexo 1: C\'odigo Fuente}
 
-    \lstinputlisting[caption=tp3.m,label=code:dft,mathescape=false]{../src/tp3.m}
+    \lstinputlisting[caption=tp3.m,label=code:tp3,mathescape=false]{../src/tp3.m}
+    \lstinputlisting[language=bash, caption=makevideo,label=code:dft,mathescape=false, numbers=none]{../src/makevideo}
 
 \clearpage
 \section*{Anexo 2: Im\'agenes}
@@ -265,21 +278,21 @@ Por otro lado, el desplazamiento reci\'en se aprecia en el largo plazo.
 
 \begin{figure}[H]
         \includegraphics[width=\linewidth]{./images/iteration-90.png}
-        \caption{Imagen de la itraci\'on 90 de la simulaci\'on. La superficie abarcada por la nube es considerablemente mayor y además se puede observar 
+        \caption{Imagen de la iteraci\'on 90 de la simulaci\'on. La superficie abarcada por la nube es considerablemente mayor y además se puede observar 
         el desplazamiento hacia abajo en el eje vertical.}
         \label{fig:90-iteraciones}
 \end{figure}
 
 \begin{figure}[H]
         \includegraphics[width=\linewidth]{./images/iteration-350.png}
-        \caption{Imagen de la itraci\'on 350 de la simulaci\'on. Etapa final de la simulaci\'on, la nube ya est\'a bien dispersa y su concentraci\'on ha 
+        \caption{Imagen de la iteraci\'on 350 de la simulaci\'on. Etapa final de la simulaci\'on, la nube ya est\'a bien dispersa y su concentraci\'on ha 
         disminuido considerablemente. Adem\'as se observa un leve desplazamiento hacia la izquierda en el eje horizontal.}
         \label{fig:350-iteraciones}
 \end{figure}
 
 \begin{figure}[H]
         \includegraphics[width=\linewidth]{./images/iteration-1000.png}
-        \caption{Imagen de la itraci\'on 1000 de la simulaci\'on. Fin de la simulaci\'on. La nube ya es casi imperceptible. Existen ciertos puntos en el margen 
+        \caption{Imagen de la iteraci\'on 1000 de la simulaci\'on. Fin de la simulaci\'on. La nube ya es casi imperceptible. Existen ciertos puntos en el margen 
         inferior izquierdo de la imagen con cierto concentraci\'on. Esto muestra que toma m\'as de 1000 iteraciones en dispersarse completamente la nube radiactiva.}
         \label{fig:1000-iteraciones}
 \end{figure}

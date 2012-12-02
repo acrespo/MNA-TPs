@@ -1,0 +1,1 @@
+ffmpeg -f image2 -i ../images/iteration-%d.png ../video2.mpg 

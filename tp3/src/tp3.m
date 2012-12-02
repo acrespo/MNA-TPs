@@ -1,15 +1,12 @@
-function tp3(dim, iterations)
+function tp3(dim, source, iterations, h, deltaT)
 
 	uN = zeros(dim, dim);
 	u0 = zeros(dim, dim);
-	u0(dim / 2, dim / 2) = 100000;
+	u0(dim / 2, dim / 2) = source;
 
 	k = 0.025;
 	v0 = 2;
 	f0 = 1/3600;
-
-	deltaT = 0.0001;
-	h = 0.01;
 
 	colormap(gray(255));
 	image(u0);
