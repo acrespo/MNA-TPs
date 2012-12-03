@@ -104,19 +104,19 @@
 
 \begin{customabstract}
 \textbf{
-El objetivo del presente trabajo es simular y analizar el comportamiento de los radionucl\'eidos expulsados a la atm\'osfera durante un accidente nuclear, similar al 
+El objetivo del presente trabajo es simular y analizar el comportamiento de los radionucleidos expulsados a la atm\'osfera durante un accidente nuclear, similar al 
 de Chernobyl \footnote{El accidente nuclear ocurrido el 26 de april de 1986 en Chernobyl, Ucrania es considero el peor desastre nuclear de la historia \cite{Chernobyl}.}, 
 utilizando la \textit{ecuaci\'on de difusi\'on-advecci\'on} y aplicando un esquema expl\'icito centrado para discretizarla.
 }
 \end{customabstract}
 
 \begin{keywords}
-radionucl\'eidos, nube radiactiva,  ecuaci\'on difusi\'on-advecci\'on, discretizaci\'on, delta de Dirac
+radionucleidos, nube radiactiva,  ecuaci\'on difusi\'on-advecci\'on, discretizaci\'on, delta de Dirac
 \end{keywords}
 
 \section{Introducci\'on}
 
-Cuando ocurre un accidente nuclear, los radionucl\'eidos liberados a la atm\'osfera son afectados por 2 procesos: la difusi\'on de los radionucl\'eidos en el aire, y
+Cuando ocurre un accidente nuclear, los radionucleidos liberados a la atm\'osfera son afectados por 2 procesos: la difusi\'on de los radionucleidos en el aire, y
 la advecci\'on por el movimiento la masa de aire debido al viento. Para modelar el proceso de contaminaci\'on atmosf\'erica puede considerarse que la concentraci\'on de
 contaminante $u(x,y,z,t)$ satisface la \textit{ecuaci\'on difusi\'on-advecci\'on} \cite{Guia2-MNA} \cite{Convection-diffussion equation}
 
@@ -132,7 +132,7 @@ para el caso \textit{bidimensional}, siendo $u$ funci\'on de las variables $x$, 
 En la secci\'on \ref{sec:metodologia} se propone y explica la discretizaci\'on de la ecuaci\'on \ref{ec:difusion-adveccion} utilizando un esquema expl\'icito centrado. En la secci\'on \ref{sec:resultados} se muestran los resultados obtenidos, junto con el an\'alisis de cada uno. Finalmente, en la secci\'on \ref{sec:conclusiones} se interpretan los resultados obtenidos y se detallan las conclusiones m\'as importantes.
 
 Al final de este documento, se encuentra el Anexo, el cual contiene el c\'odigo fuente del programa utilizado para construir todas las im\'agenes de la simulaci\'on, 
-m\'as el comando para convertirlas en un video (Anexo 1) y  algunas im\'agenes de la simulaci\'on y referenciadas a lo largo del presente trabajo (Anexo 2).
+m\'as el comando para convertirlas en un video (Anexo 1) y  algunas im\'agenes de la simulaci\'on, referenciadas a lo largo del presente trabajo (Anexo 2).
 
 \section{Metodolog\'ia}
 \label{sec:metodologia}
@@ -157,7 +157,9 @@ Para la discretizaci\'on del problema, se aplica un esquema expl\'icito centrado
 \begin{equation}
 \label{ec:discretizacion}
 \begin{array}{c}
-    \dfrac{u_{i,j}^{n+1} - u_{i,j}^{n}}{2\Delta t} + v_{x}\dfrac{u_{i+1,j}^{n} - u_{i-1,j}^{n}}{2\Delta x} + v_{y}\dfrac{u_{i,j+1}^{n} - u_{i,j-1}^{n}}{2\Delta y} \\ = k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + u_{i-1,j}^{n}}{\Delta x^2} - \dfrac{u_{i,j+1}^{n} - 2u_{i,j}^{n} + u_{i,j-1}^{n}}{\Delta y^2}  \right)
+    \dfrac{u_{i,j}^{n+1} - u_{i,j}^{n}}{2\Delta t} + v_{x}\dfrac{u_{i+1,j}^{n} - u_{i-1,j}^{n}}{2\Delta x} + v_{y}\dfrac{u_{i,j+1}^{n} - u_{i,j-1}^{n}}{2\Delta y} \\
+    \\
+    = k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + u_{i-1,j}^{n}}{\Delta x^2} - \dfrac{u_{i,j+1}^{n} - 2u_{i,j}^{n} + u_{i,j-1}^{n}}{\Delta y^2}  \right)
 \end{array}       
 \end{equation}
 
