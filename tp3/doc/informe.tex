@@ -104,19 +104,19 @@
 
 \begin{customabstract}
 \textbf{
-El objetivo del presente trabajo es simular y analizar el comportamiento de los radionucleidos expulsados a la atm\'osfera durante un accidente nuclear, similar al 
+El objetivo del presente trabajo es simular y analizar el comportamiento de los radionucl\'eidos expulsados a la atm\'osfera durante un accidente nuclear, similar al 
 de Chernobyl \footnote{El accidente nuclear ocurrido el 26 de april de 1986 en Chernobyl, Ucrania es considero el peor desastre nuclear de la historia \cite{Chernobyl}.}, 
 utilizando la \textit{ecuaci\'on de difusi\'on-advecci\'on} y aplicando un esquema expl\'icito centrado para discretizarla.
 }
 \end{customabstract}
 
 \begin{keywords}
-radionucleidos, nube radiactiva,  ecuaci\'on difusi\'on-advecci\'on, discretizaci\'on, delta de Dirac
+radionucl\'eidos, nube radiactiva,  ecuaci\'on difusi\'on-advecci\'on, discretizaci\'on, delta de Dirac
 \end{keywords}
 
 \section{Introducci\'on}
 
-Cuando ocurre un accidente nuclear, los radionucleidos liberados a la atm\'osfera son afectados por 2 procesos: la difusi\'on de los radionucleidos en el aire, y
+Cuando ocurre un accidente nuclear, los radionucl\'eidos liberados a la atm\'osfera son afectados por 2 procesos: la difusi\'on de los radionucl\'eidos en el aire, y
 la advecci\'on por el movimiento la masa de aire debido al viento. Para modelar el proceso de contaminaci\'on atmosf\'erica puede considerarse que la concentraci\'on de
 contaminante $u(x,y,z,t)$ satisface la \textit{ecuaci\'on difusi\'on-advecci\'on} \cite{Guia2-MNA} \cite{Convection-diffussion equation}
 
@@ -127,47 +127,45 @@ contaminante $u(x,y,z,t)$ satisface la \textit{ecuaci\'on difusi\'on-advecci\'on
 
 donde $\vec{v} (x,y,z,t)$ es la velocidad del viento  y k, el coeficiente de difusi\'on de la atm\'osfera. Dicha ecuaci\'on tiene en cuenta tanto el proceso de 
 difusi\'on como el de advecci\'on. El objetivo del presente trabajo es resolver num\'ericamente esta ecuaci\'on para estudiar el comportamiento de estos procesos 
-para el caso \textit{bidimensional}.\\
+para el caso \textit{bidimensional}, siendo $u$ funci\'on de las variables $x$, $y$, y $t$ \'unicamente.
 
-En la secci\'on \ref{sec:metodologia} proponemos y explicamos la discretizaci\'on de la ecuaci\'on \ref{ec:difusion-adveccion} utilizando un esquema expl\'icito 
-centrado.\\
-En la secci\'on \ref{sec:resultados} se muestran los resultados obtenidos, junto con el an\'alisis de cada uno. \\
-Finalmente, en la secci\'on \ref{sec:conclusiones} se interpretan los resultados obtenidos y se detallan las conclusiones m\'as importantes. \\
+En la secci\'on \ref{sec:metodologia} se propone y explica la discretizaci\'on de la ecuaci\'on \ref{ec:difusion-adveccion} utilizando un esquema expl\'icito centrado. En la secci\'on \ref{sec:resultados} se muestran los resultados obtenidos, junto con el an\'alisis de cada uno. Finalmente, en la secci\'on \ref{sec:conclusiones} se interpretan los resultados obtenidos y se detallan las conclusiones m\'as importantes.
 
 Al final de este documento, se encuentra el Anexo, el cual contiene el c\'odigo fuente del programa utilizado para construir todas las im\'agenes de la simulaci\'on, 
-m\'as el comando para convertirlas en un video (Anexo 1) y  algunas im\'agenes de la simulaci\'on y referenciadas a lo largo del presente trabajo (Anexo 2).\\
+m\'as el comando para convertirlas en un video (Anexo 1) y  algunas im\'agenes de la simulaci\'on y referenciadas a lo largo del presente trabajo (Anexo 2).
 
 \section{Metodolog\'ia}
 \label{sec:metodologia}
-Consideramos el caso bimensional, donde $u = u(x,y,t)$ y la ecuaci\'on \ref{ec:difusion-adveccion} se escribe como \cite{Guia2-MNA}
+Se considera el caso bimensional, donde $u = u(x,y,t)$ y la ecuaci\'on \ref{ec:difusion-adveccion} se escribe como \cite{Guia2-MNA}
 
 \begin{equation}
 \label{ec:difusion-adveccion-2D}
 \frac{\partial u}{\partial t} + \frac{\partial (uv_{x})}{\partial x} + \frac{\partial (uv_{y})}{\partial y}  = k \left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)
 \end{equation}
 
-Para nuestro caso de estudio, tomaremos $k = 0,025$ y $v$, la velocidad del viento est\'a dada por 
+Para nuestro caso de estudio, tomamos $k = 0,025$ y $v$, la velocidad del viento est\'a dada por 
 
 \begin{equation}
     \vec{v} = v_{0}(\cos (2\pi f_{0}t), \sin (2\pi f_{0}t))
 \end{equation}
 
 donde $v_{0} = 2$ y $f_{0} = \frac{1}{3600}$. La fuente puede considerarse casi toda concentrada en una regi\'on muy pequeña, es decir casi una 
-delta de Dirac \cite{Guia2-MNA}. Este sería el ``hipocentro'' o \textit{Ground-zero} \cite{Ground-zero} del desastre. \\
+delta de Dirac \cite{Guia2-MNA}. Este sería el ``hipocentro'' o \textit{Ground-zero} \cite{Ground-zero} del desastre.
 
-Para la discretizaci\'on del problema, aplicamos un esquema expl\'icito centrado a la ecuaci\'on \ref{ec:difusion-adveccion-2D}, resultando en 
+Para la discretizaci\'on del problema, se aplica un esquema expl\'icito centrado a la ecuaci\'on \ref{ec:difusion-adveccion-2D}, resultando en 
 
 \begin{equation}
 \label{ec:discretizacion}
 \begin{array}{c}
-\dfrac{u_{i,j}^{n+1} - u_{i,j}^{n}}{2\Delta t} + v_{x}\dfrac{u_{i+1,j}^{n} - u_{i-1,j}^{n}}{2\Delta x} +  v_{y}\dfrac{u_{i,j+1}^{n} - u_{i,j-1}^{n}}{2\Delta y} \\
-    \\
-    = k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + u_{i-1,j}^{n}}{\Delta x^2} - \dfrac{u_{i,j+1}^{n} - 2u_{i,j}^{n} + u_{i,j-1}^{n}}{\Delta y^2}  \right)
+    \dfrac{u_{i,j}^{n+1} - u_{i,j}^{n}}{2\Delta t} + v_{x}\dfrac{u_{i+1,j}^{n} - u_{i-1,j}^{n}}{2\Delta x} + v_{y}\dfrac{u_{i,j+1}^{n} - u_{i,j-1}^{n}}{2\Delta y} \\ = k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + u_{i-1,j}^{n}}{\Delta x^2} - \dfrac{u_{i,j+1}^{n} - 2u_{i,j}^{n} + u_{i,j-1}^{n}}{\Delta y^2}  \right)
 \end{array}       
 \end{equation}
 
-Aqu\'i la notaci\'on utilizada es la siguiente: \\
-$u_{i, j}^{n} = u(i\Delta x, j\Delta y, n\Delta t$).
+Donde la notaci\'on utilizada es la siguiente:
+\[
+u_{i, j}^{n} = u(i\Delta x, j\Delta y, n\Delta t)
+\]
+
 De la ecuaci\'on \ref{ec:discretizacion} se puede despejar $u_{i,j}^{n+1}$, resultando en la ecuaci\'on \ref{ec:discretizacion-despejada}, que permite calcular 
 de forma iterativa $u(x,y,t)$ dado el estado inicial $u_{0}$.
 
@@ -186,8 +184,8 @@ u_{i,j}^{n+1} = 2\Delta t \left[ k \left( \dfrac{u_{i+1,j}^{n} - 2u_{i,j}^{n} + 
 \section{Resultados}
 \label{sec:resultados}
 
-Variando los par\'ametros, buscamos experimentalmente aquellos para los cuales el algoritmo fuera estable \cite{Numerical-stability}. Luego de varias pruebas, 
-escogimos los siguientes valores:
+Variando los par\'ametros, se busc\'o'o experimentalmente aquellos para los cuales el algoritmo fuera estable \cite{Numerical-stability}. Luego de varias pruebas, 
+se escogieron los siguientes valores:
 
 \begin{equation}
     \nonumber
@@ -199,28 +197,29 @@ escogimos los siguientes valores:
 \end{equation}
 
 Para repetir los resultados de esta secci\'on se debe correr la el programa \textit{tp3} que figura en el Anexo: C\'odigo Fuente \ref{code:tp3} con los 
-siguientes par\'ametros: 50, 10000, 1000, 0.01, 0.0001. Otros resultados interesantes que observamos fueron al variar, la intensidad inicial a 100000, o, en otro caso,
- los desplazamiento espacial a 0.1 y el temporal a 0.1. Esta última ejecuci\'on es un claro ejemplo de cuando el algoritmo se comporta de manera inestable.\\
+siguientes par\'ametros: 50, 10000, 1000, 0.01, 0.0001. Se observan notorios cambios al variar la intensidad inicial a 100000, o, en otro caso,
+ los desplazamientos espaciales a 0.1 y el temporal a 0.1. Este último ejemplo muestra claramente un caso de condiciones que llevan a un comportamiento
+ inestable del algoritmo.
 
-Para simular el estado inicial en el que la fuente est\'a toda concentrada en un solo punto, asignamos a la configuraci\'on inicial $u_{0}$ una matriz 
-cuadrada de ceros de una cierta dimensi\'on (en nuestro caso 50), con la particularidad de que en el centro introducimos un valor de 10000, que simular\'ia
-la delta de Dirac. En la figura \ref{fig:inicial} podemos ver este estado inicial.\\
+Para simular el estado inicial en el que la fuente est\'a toda concentrada en un solo punto, se asigna a la configuraci\'on inicial $u_{0}$ una matriz 
+cuadrada de ceros de cierto tamaño (en el caso de ejemplo $50$), con la particularidad de que en el centro se introduce un valor de 10000, que simular\'ia
+la delta de Dirac. En la figura \ref{fig:inicial} se puede ver este estado inicial.
 
-La figura \ref{fig:10-iteraciones} muestra la configuraci\'on luego de 10 iteraciones. Podemos observar como la nube se expande en todas las direcciones, 
-manteniendo una alta concentraci\'on. Sigue centrada en su posici\'on inicial pero observamos que su expansi\'on no es sim\'etrica. Este efecto es ocasionado 
-por la advecci\'on del viento. \\
+La figura \ref{fig:10-iteraciones} muestra la configuraci\'on luego de 10 iteraciones. Se puede observar como la nube se expande en todas las direcciones, 
+manteniendo una alta concentraci\'on en promedio.
+Sigue centrada en su posici\'on inicial pero se observa que su expansi\'on no es sim\'etrica. Este efecto es ocasionado por la advecci\'on del viento.
 
 En la figura \ref{fig:40-iteraciones} se puede ver la simulaci\'on al t\'ermino de 40 iteraciones. La nube no se encuentra mucho más dispersa pero se 
-comienza a apreciar de forma m\'as marcada la anti-simetr\'ia. Y observamos un par de detalles m\'as, la intensidad es mayor en la parte inferior y pareciera
-expandirse m\'as hacia abajo. De nuevo, estos efectos pueden atribuirse a la advecci\'on del viento.\\ 
+comienza a apreciar de forma m\'as marcada la anti-simetr\'ia. Y se observa el detalle que la intensidad es mayor en la parte inferior y pareciera
+expandirse m\'as hacia abajo. Nuevamente, estos efectos son atribuídos a la advecci\'on del viento.
 
 La figura \ref{fig:90-iteraciones} muestra el estado de la simulaci\'on luego de la iteraci\'on 90. Aqu\'i ya la superficie abarcada por la nube es 
 considerablemente mayor, y se sigue observando en su centro la mayor concentraci\'on de material radioactivo. Adem\'as ya es apreciable el desplazamiento hacia 
-abajo sobre el eje vertical por el efecto del viento.\\
+abajo sobre el eje vertical por el efecto del viento.
 
 La figura \ref{fig:350-iteraciones} muestra la etapa final de la simulaci\'on: iteraci\'on 350. La superficie de la nube abarca gran parte del 3er cuadrante, 
 pero la itensidad ya ha disminuido considerablemente. También se observa un leve desplazamiento hacia la izquierda en el eje horizontal, sumado al ya mencionado 
-desplazamiento hacia abajo sobre el vertical. \\
+desplazamiento hacia abajo sobre el vertical.
 
 La figura \ref{fig:1000-iteraciones} muestra el final de la simulaci\'on, luego de la iteraci\'on 1000. Ya imagen muestra casi completamente negra, con algunos muy 
 pocos puntos con cierta intensidad en el margen inferior izquierdo, casi imperceptibles al ojo humano.
@@ -229,10 +228,10 @@ pocos puntos con cierta intensidad en el margen inferior izquierdo, casi imperce
 \section{Conclusiones}
 \label{sec:conclusiones}
 
-A partir de las simulaciones realizadas podemos concluir que el efecto del viento tiene dos grande efectos sobre la dispersi\'on de material radioactivo. Estos son, 
+A partir de las simulaciones realizadas se puede concluir que el efecto del viento tiene dos grandes efectos sobre la dispersi\'on de material radioactivo. Estos son, 
 la deformaci\'on y el desplazamiento de la nube a lo largo del tiempo. Aunque ambos efectos esten presentes durante toda la simulaci\'on, la deformaci\'on se hace
 m\'as notoria durante la primera etapa de expansi\'on, durante la cual se aprecia la falta de simetr\'ia en la expansi\'on de la nube. 
-Por otro lado, el desplazamiento reci\'en se aprecia en el largo plazo.
+Por otro lado, el desplazamiento sólo se aprecia en el largo plazo.
 
 
 \section*{Referencias}
